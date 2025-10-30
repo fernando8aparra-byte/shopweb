@@ -3,31 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Starlight Web</title>
+  <title>Starlight Luxury</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <div class="starry-sky">
-    <div class="stars" id="stars"></div>
-  </div>
+  <!-- FONDO ESPACIAL -->
+  <div class="space-bg"></div>
 
-  <!-- Aquí irá tu contenido más adelante -->
+  <!-- ESTRELLAS ANIMADAS -->
+  <div class="stars" id="stars"></div>
+
+  <!-- Capa de brillo sutil (opcional) -->
+  <div class="glow"></div>
 
   <script>
-    // Generar 150 estrellas aleatorias con JS para más realismo
+    // Generar 200 estrellas con brillo realista
     const starsContainer = document.getElementById('stars');
-    const numStars = 150;
+    const numStars = 200;
 
     for (let i = 0; i < numStars; i++) {
       const star = document.createElement('div');
       star.classList.add('star');
 
-      const size = Math.random() * 2.5 + 0.5;
+      const size = Math.random() * 3 + 0.5;
       const top = Math.random() * 100;
       const left = Math.random() * 100;
-      const duration = Math.random() * 3 + 2;
-      const delay = Math.random() * 3;
+      const duration = Math.random() * 4 + 2;
+      const delay = Math.random() * 5;
+      const opacity = Math.random() * 0.8 + 0.2;
 
       star.style.width = `${size}px`;
       star.style.height = `${size}px`;
@@ -35,6 +39,8 @@
       star.style.left = `${left}%`;
       star.style.animationDuration = `${duration}s`;
       star.style.animationDelay = `${delay}s`;
+      star.style.opacity = opacity;
+      star.style.boxShadow = `0 0 ${size * 3}px #fff, 0 0 ${size * 6}px #fff`;
 
       starsContainer.appendChild(star);
     }
