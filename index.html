@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tienda Espacial - Gorras Galácticas</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- PayPal SDK (sandbox para pruebas) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_AQUI&currency=USD"></script>
+</head>
+<body>
+  <header class="header">
+    <h1>TE CREAMOS TU PÁGINA WEB DESDE 0 Y 100% PERSONALIZADA</h1>
+  </header>
+
+  <section class="hero">
+    <div class="hero-overlay"></div>
+  </section>
+
+  <main class="products-container">
+    <section class="products-grid">
+      <!-- Producto 1 -->
+      <article class="product-card" data-price="29.99" data-id="cap1">
+        <img src="images/cap1.jpg" alt="Gorra Nebula" loading="lazy"/>
+        <h3>Gorra Nebula</h3>
+        <p class="price">$29.99</p>
+        <button class="buy-btn" data-product="Gorra Nebula" data-price="29.99">
+          Comprar ahora
+        </button>
+      </article>
+
+      <!-- Producto 2 -->
+      <article class="product-card" data-price="34.99" data-id="cap2">
+        <img src="images/cap2.jpg" alt="Gorra Estelar" loading="lazy"/>
+        <h3>Gorra Estelar</h3>
+        <p class="price">$34.99</p>
+        <button class="buy-btn" data-product="Gorra Estelar" data-price="34.99">
+          Comprar ahora
+        </button>
+      </article>
+
+      <!-- Producto 3 -->
+      <article class="product-card" data-price="39.99" data-id="cap3">
+        <img src="images/cap3.jpg" alt="Gorra Cósmica" loading="lazy"/>
+        <h3>Gorra Cósmica</h3>
+        <p class="price">$39.99</p>
+        <button class="buy-btn" data-product="Gorra Cósmica" data-price="39.99">
+          Comprar ahora
+        </button>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 Tienda Espacial | Desarrollado con ❤️ y JavaScript puro</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
