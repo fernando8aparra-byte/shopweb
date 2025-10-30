@@ -1,50 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Starlight Luxury</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fondo Espacial</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div id="vanta-bg"></div>
 
-  <!-- FONDO ESPACIAL -->
-  <div class="space-bg"></div>
-
-  <!-- ESTRELLAS ANIMADAS -->
-  <div class="stars" id="stars"></div>
-
-  <!-- Capa de brillo sutil (opcional) -->
-  <div class="glow"></div>
-
-  <script>
-    // Generar 200 estrellas con brillo realista
-    const starsContainer = document.getElementById('stars');
-    const numStars = 200;
-
-    for (let i = 0; i < numStars; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-
-      const size = Math.random() * 3 + 0.5;
-      const top = Math.random() * 100;
-      const left = Math.random() * 100;
-      const duration = Math.random() * 4 + 2;
-      const delay = Math.random() * 5;
-      const opacity = Math.random() * 0.8 + 0.2;
-
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.top = `${top}%`;
-      star.style.left = `${left}%`;
-      star.style.animationDuration = `${duration}s`;
-      star.style.animationDelay = `${delay}s`;
-      star.style.opacity = opacity;
-      star.style.boxShadow = `0 0 ${size * 3}px #fff, 0 0 ${size * 6}px #fff`;
-
-      starsContainer.appendChild(star);
-    }
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.stars.min.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
