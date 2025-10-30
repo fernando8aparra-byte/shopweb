@@ -2,57 +2,101 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tienda Espacial - Gorras Galácticas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tienda de gorras premium con diseño espacial. KILLER_STARRR." />
+  <title>KILLER_STARRR | Gorras Premium</title>
   <link rel="stylesheet" href="styles.css" />
-  <!-- PayPal SDK (sandbox para pruebas) -->
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- PayPal SDK -->
   <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_AQUI&currency=USD"></script>
 </head>
 <body>
-  <header class="header">
-    <h1>TE CREAMOS TU PÁGINA WEB DESDE 0 Y 100% PERSONALIZADA</h1>
+
+  <!-- Header / Navegación -->
+  <header class="navbar">
+    <nav class="nav-container">
+      <ul class="nav-links">
+        <li><a href="#">31 HATS</a></li>
+        <li><a href="#">A BATHING APE</a></li>
+        <li><a href="#">ANYMORE</a></li>
+        <li><a href="#">BARBAS HATS</a></li>
+        <li><a href="#">COMME DES GARÇONS</a></li>
+      </ul>
+      <div class="logo">
+        <h1>KILLER_STARRR</h1>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#">DANDY HATS</a></li>
+        <li><a href="#">RUDE AWAKENINGS</a></li>
+        <li><a href="#">GORRAS</a></li>
+        <li><a href="#">JOYERÍA</a></li>
+        <li><a href="#">PLAYERAS</a></li>
+      </ul>
+      <div class="nav-icons">
+        <a href="#" class="icon">Search</a>
+        <a href="#" class="icon cart">Cart</a>
+      </div>
+    </nav>
   </header>
 
-  <section class="hero">
-    <div class="hero-overlay"></div>
-  </section>
+  <!-- Main Content -->
+  <main class="products-section">
+    <div class="products-grid">
 
-  <main class="products-container">
-    <section class="products-grid">
       <!-- Producto 1 -->
-      <article class="product-card" data-price="29.99" data-id="cap1">
-        <img src="images/cap1.jpg" alt="Gorra Nebula" loading="lazy"/>
-        <h3>Gorra Nebula</h3>
-        <p class="price">$29.99</p>
-        <button class="buy-btn" data-product="Gorra Nebula" data-price="29.99">
-          Comprar ahora
-        </button>
+      <article class="product-card" data-price="89.00" data-name="Nebula Cap">
+        <div class="image-container">
+          <img src="images/cap1.jpg" alt="Gorra Nebula - KILLER_STARRR" loading="lazy" />
+          <button class="add-to-cart">ADD TO CART</button>
+        </div>
+        <div class="product-info">
+          <h3>NEBULA CAP</h3>
+          <p class="price">$89.00</p>
+        </div>
       </article>
 
       <!-- Producto 2 -->
-      <article class="product-card" data-price="34.99" data-id="cap2">
-        <img src="images/cap2.jpg" alt="Gorra Estelar" loading="lazy"/>
-        <h3>Gorra Estelar</h3>
-        <p class="price">$34.99</p>
-        <button class="buy-btn" data-product="Gorra Estelar" data-price="34.99">
-          Comprar ahora
-        </button>
+      <article class="product-card" data-price="95.00" data-name="Cosmic Snapback">
+        <div class="image-container">
+          <img src="images/cap2.jpg" alt="Gorra Cosmic Snapback - KILLER_STARRR" loading="lazy" />
+          <button class="add-to-cart">ADD TO CART</button>
+        </div>
+        <div class="product-info">
+          <h3>COSMIC SNAPBACK</h3>
+          <p class="price">$95.00</p>
+        </div>
       </article>
 
       <!-- Producto 3 -->
-      <article class="product-card" data-price="39.99" data-id="cap3">
-        <img src="images/cap3.jpg" alt="Gorra Cósmica" loading="lazy"/>
-        <h3>Gorra Cósmica</h3>
-        <p class="price">$39.99</p>
-        <button class="buy-btn" data-product="Gorra Cósmica" data-price="39.99">
-          Comprar ahora
-        </button>
+      <article class="product-card" data-price="110.00" data-name="Void Trucker">
+        <div class="image-container">
+          <img src="images/cap3.jpg" alt="Gorra Void Trucker - KILLER_STARRR" loading="lazy" />
+          <button class="add-to-cart">ADD TO CART</button>
+        </div>
+        <div class="product-info">
+          <h3>VOID TRUCKER</h3>
+          <p class="price">$110.00</p>
+        </div>
       </article>
-    </section>
+
+      <!-- Producto 4 -->
+      <article class="product-card" data-price="79.00" data-name="Stellar Beanie">
+        <div class="image-container">
+          <img src="images/cap4.jpg" alt="Gorra Stellar Beanie - KILLER_STARRR" loading="lazy" />
+          <button class="add-to-cart">ADD TO CART</button>
+        </div>
+        <div class="product-info">
+          <h3>STELLAR BEANIE</h3>
+          <p class="price">$79.00</p>
+        </div>
+      </article>
+
+    </div>
   </main>
 
   <footer class="footer">
-    <p>© 2025 Tienda Espacial | Desarrollado con ❤️ y JavaScript puro</p>
+    <p>© 2025 KILLER_STARRR | All Rights Reserved</p>
   </footer>
 
   <script src="app.js"></script>
