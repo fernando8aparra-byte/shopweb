@@ -1,115 +1,166 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Starlight Luxury</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Space Shop</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% 55%, #010104, #000000 80%);
+    font-family: 'Poppins', sans-serif;
+  }
 
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      background: #000;
-    }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0; left: 0;
+    z-index: 0;
+    image-rendering: crisp-edges;
+    filter: brightness(0.95) contrast(1.1) saturate(1.05);
+  }
 
-    /* FONDO REAL DEL ESPACIO (NASA - HOSTEADO) */
-    .space-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://images.unsplash.com/photo-1464802686295-1b6d2c0e80d4?auto=format&fit=crop&w=2000&q=80') center center / cover no-repeat;
-      z-index: 1;
-      filter: brightness(0.85) contrast(1.15);
-      background-attachment: fixed;
-    }
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+    padding: 18px 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+  }
 
-    /* ESTRELLAS ANIMADAS */
-    .stars {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 2;
-      pointer-events: none;
-    }
+  header h1 {
+    color: #ffffff;
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+  }
 
-    .star {
-      position: absolute;
-      background: radial-gradient(circle, #fff 10%, transparent 70%);
-      border-radius: 50%;
-      animation: twinkle 3s infinite ease-in-out;
-      transform: translateZ(0);
-    }
+  nav {
+    display: flex;
+    gap: 30px;
+  }
 
-    @keyframes twinkle {
-      0%, 100% { opacity: 0.3; transform: scale(0.8); }
-      50% { opacity: 1; transform: scale(1.4); }
-    }
+  nav a {
+    color: #e6e6e6;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 400;
+    position: relative;
+    transition: all 0.3s ease;
+    padding: 8px 14px;
+    border-radius: 6px;
+  }
 
-    /* BRILLO AMBIENTAL (como Rolls-Royce) */
-    .glow {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at 50% 30%, rgba(135, 206, 250, 0.08), transparent 70%);
-      z-index: 3;
-      pointer-events: none;
-      animation: pulse 10s infinite alternate;
-    }
+  /* Efecto al pasar el puntero */
+  nav a:hover {
+    background: rgba(255,255,255,0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 6px rgba(255,255,255,0.2);
+  }
 
-    @keyframes pulse {
-      0% { opacity: 0.3; }
-      100% { opacity: 0.7; }
-    }
-  </style>
+  /* Efecto al presionar */
+  nav a:active {
+    transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(255,255,255,0.2) inset;
+  }
+</style>
 </head>
 <body>
+<canvas id="space"></canvas>
 
-  <!-- FONDO ESPACIAL -->
-  <div class="space-bg"></div>
+<header>
+  <h1>Space Shop</h1>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Nosotros</a>
+  </nav>
+</header>
 
-  <!-- ESTRELLAS -->
-  <div class="stars" id="stars"></div>
+<script>
+const canvas = document.getElementById("space");
+const ctx = canvas.getContext("2d");
+let stars = [];
+let w, h, ratio = window.devicePixelRatio || 1;
 
-  <!-- BRILLO -->
-  <div class="glow"></div>
+function resize() {
+  w = window.innerWidth;
+  h = window.innerHeight;
+  canvas.width = w * ratio;
+  canvas.height = h * ratio;
+  ctx.scale(ratio, ratio);
+  generateStars();
+}
+window.addEventListener("resize", resize);
 
-  <script>
-    const starsContainer = document.getElementById('stars');
-    const numStars = 250;
-
-    for (let i = 0; i < numStars; i++) {
-      const star = document.createElement('div');
-      star.classList.add('star');
-
-      const size = Math.random() * 3.5 + 0.5;
-      const top = Math.random() * 100;
-      const left = Math.random() * 100;
-      const duration = Math.random() * 4 + 2;
-      const delay = Math.random() * 5;
-
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.top = `${top}%`;
-      star.style.left = `${left}%`;
-      star.style.animationDuration = `${duration}s`;
-      star.style.animationDelay = `${delay}s`;
-      star.style.boxShadow = `0 0 ${size * 4}px #fff, 0 0 ${size * 8}px #fff`;
-
-      starsContainer.appendChild(star);
+function generateStars() {
+  stars = [];
+  const layers = [
+    { count: 500, depth: 0.3 },
+    { count: 300, depth: 0.6 },
+    { count: 150, depth: 1.0 }
+  ];
+  
+  layers.forEach(layer => {
+    for (let i = 0; i < layer.count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        z: layer.depth,
+        size: (Math.random() * 0.6 + 0.1) * layer.depth,
+        brightness: Math.random() * 0.5 + 0.3,
+        hue: 210 + Math.random() * 10
+      });
     }
-  </script>
+  });
+}
 
+function drawStars(mouseX = 0, mouseY = 0) {
+  ctx.fillStyle = "#010104";
+  ctx.fillRect(0, 0, w, h);
+
+  stars.forEach(star => {
+    const offsetX = (mouseX - w/2) * (1 - star.z) * 0.005; 
+    const offsetY = (mouseY - h/2) * (1 - star.z) * 0.005; 
+    const x = star.x + offsetX;
+    const y = star.y + offsetY;
+
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, star.size * 2.2);
+    grad.addColorStop(0, `hsl(${star.hue}, 40%, 96%)`);
+    grad.addColorStop(0.4, `hsla(${star.hue}, 70%, 85%, 0.7)`);
+    grad.addColorStop(1, "transparent");
+
+    ctx.globalAlpha = star.brightness;
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(x, y, star.size * 2.2, 0, Math.PI * 2);
+    ctx.fill();
+  });
+}
+
+let mouse = { x: 0, y: 0 };
+window.addEventListener("mousemove", e => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+function animate() {
+  drawStars(mouse.x, mouse.y);
+  requestAnimationFrame(animate);
+}
+
+resize();
+animate();
+</script>
 </body>
 </html>
