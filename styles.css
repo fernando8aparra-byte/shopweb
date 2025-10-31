@@ -1,17 +1,72 @@
 html, body {
   margin: 0;
-  padding: 0;
-  width: 100%;
   height: 100%;
   overflow: hidden;
-  background-color: #000;
+  background: radial-gradient(circle at 50% 55%, #010104, #000000 85%);
+  font-family: 'Poppins', sans-serif;
 }
 
-#vanta-bg {
+canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  image-rendering: crisp-edges;
+  filter: brightness(0.95) contrast(1.1);
+}
+
+/* HEADER */
+header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  z-index: -1;
+  z-index: 5;
+  padding: 18px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+header h1 {
+  color: #ffffff;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+/* MENÚ */
+nav {
+  display: flex;
+  gap: 30px;
+}
+
+nav a {
+  color: #e6e6e6;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 400;
+  position: relative;
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: all 0.25s ease;
+}
+
+/* Hover suave */
+nav a:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(255,255,255,0.15);
+}
+
+/* Animación al presionar */
+nav a:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 1px 3px rgba(255,255,255,0.2) inset;
 }
