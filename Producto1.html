@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playera Azul - Tienda de Efraín</title>
+  <style>
+    body { font-family: Arial; background: #f5f5f5; margin: 0; }
+    header { background: #2b2b2b; color: white; padding: 15px; text-align: center; }
+    .container { padding: 20px; }
+    .product-details {
+      display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;
+      background: white; padding: 20px; border-radius: 10px;
+    }
+    .product-details img {
+      max-width: 300px; border-radius: 10px;
+    }
+    .info { max-width: 400px; }
+    .price { font-size: 22px; color: green; font-weight: bold; }
+    .buttons img { width: 40px; vertical-align: middle; }
+    .buttons button {
+      margin: 5px; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer;
+    }
+    .related {
+      margin-top: 40px;
+    }
+    .related h3 { text-align: center; }
+    .related-items {
+      display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;
+    }
+    .related-items div {
+      background: white; padding: 10px; border-radius: 10px; text-align: center;
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>Tienda de Efraín</h2>
+</header>
+
+<div class="container">
+  <div class="product-details">
+    <img src="https://via.placeholder.com/300" alt="Playera Azul">
+    <div class="info">
+      <h2>Playera Azul</h2>
+      <p class="price">$250 MXN</p>
+      <p>Playera 100% algodón, cómoda y ligera. Disponible en varias tallas.</p>
+      <label>Cantidad:</label>
+      <input type="number" min="1" value="1" style="width:60px">
+      <div class="buttons">
+        <button><img src="https://www.paypalobjects.com/webstatic/mktg/logo/pp_cc_mark_37x23.jpg"> PayPal</button>
+        <button><img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Visa_Logo.png"> Tarjeta</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>Productos que podrían interesarte</h3>
+    <div class="related-items">
+      <div>
+        <img src="https://via.placeholder.com/150" alt="Tenis Blancos">
+        <p>Tenis Blancos</p>
+        <button onclick="window.location.href='producto2.html'">Ver</button>
+      </div>
+      <div>
+        <img src="https://via.placeholder.com/150" alt="Gorra Negra">
+        <p>Gorra Negra</p>
+        <button onclick="window.location.href='producto3.html'">Ver</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
