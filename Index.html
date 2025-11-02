@@ -7,13 +7,12 @@
 <style>
 :root {
   --bg: #ffffff;
-  --text: #111111;
+  --text: #111;
   --muted: #777;
   --card-bg: #fff;
   --accent: #7c4dff;
   --shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
-
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);}
 header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
@@ -22,10 +21,7 @@ header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;to
 .header-actions{display:flex;align-items:center;gap:14px;}
 .icon{cursor:pointer;font-size:20px;}
 main{max-width:1200px;margin:auto;padding:20px;}
-.breadcrumbs{font-size:14px;color:var(--muted);font-weight:600;}
 .page-title{font-size:38px;margin:6px 0 14px;font-weight:800;}
-.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.controls button{background:var(--card-bg);border:1px solid #ccc;padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
 .card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;cursor:pointer;}
 .card:hover{transform:translateY(-4px);}
@@ -35,22 +31,17 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
 .card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
 .card button:hover{opacity:0.9;}
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; gap: 16px; }
-  .card img { height: 250px; }
-  .header-inner { padding: 12px; }
-  .page-title { font-size: 28px; }
-}
 .cart-panel{position:fixed;top:0;right:-400px;width:340px;height:100%;background:var(--card-bg);
   box-shadow:-4px 0 20px rgba(0,0,0,0.2);transition:right .3s ease;display:flex;flex-direction:column;z-index:100;}
 .cart-panel.open{right:0;}
 .cart-header{padding:16px;font-size:20px;font-weight:700;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;align-items:center;}
 .cart-items{flex:1;overflow-y:auto;padding:14px;}
+.cart-empty{text-align:center;color:var(--muted);font-size:15px;padding:50px 0;}
 .cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;}
 .cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
-.cart-footer{border-top:1px solid #ccc;padding:16px;}
+.cart-footer{border-top:1px solid #ccc;padding:16px;transition:all .3s ease;}
 .cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
-.payment-options{display:none;flex-direction:column;gap:10px;margin-top:10px;}
+.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
 .pay-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:15px;cursor:pointer;}
 .paypal{background:#ffc439;color:#111;}
 .paypal img{height:18px;}
@@ -63,23 +54,26 @@ main{max-width:1200px;margin:auto;padding:20px;}
 #menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
 .menu-dropdown {position: fixed;top: 0; left: -270px;width: 250px; height: 100%;background: var(--card-bg);
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);transition: left 0.3s ease;z-index: 25;padding: 60px 20px 20px;
-  display: flex; flex-direction: column;}
+  display: flex; flex-direction: column;position:fixed;}
 .menu-dropdown.open { left: 0; }
 .menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;}
 .menu-item:hover { color: var(--accent); }
 .menu-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.2);z-index: 24;
   opacity: 0;visibility: hidden;transition: opacity 0.3s ease;}
 .menu-overlay.show {opacity: 1;visibility: visible;}
-#closeMenu {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 22px;
-  cursor: pointer;
-  font-weight: 800;
-  color: var(--text);
+.menu-close{position:absolute;top:12px;right:16px;font-size:22px;cursor:pointer;color:var(--text);}
+.proximamente-box{
+  text-align:center;
+  background:var(--card-bg);
+  padding:50px 20px;
+  border-radius:12px;
+  box-shadow:var(--shadow);
+  max-width:400px;
+  margin:80px auto;
 }
-#closeMenu:hover { color: var(--accent); }
+.proximamente-box img{width:80px;margin-bottom:10px;opacity:0.7;}
+.proximamente-box h2{font-size:22px;margin-bottom:8px;}
+.proximamente-box p{color:var(--muted);}
 </style>
 </head>
 <body>
@@ -102,29 +96,18 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <!-- Menú -->
 <div class="menu-overlay" id="menuOverlay"></div>
 <div class="menu-dropdown" id="menuDropdown">
-  <div id="closeMenu">✕</div>
-  <div class="menu-item" onclick="window.location.href='index.html'">Gorras</div>
-  <div class="menu-item">Camisetas (Próximamente)</div>
-  <div class="menu-item">Sudaderas (Próximamente)</div>
-  <div class="menu-item">Tenis (Próximamente)</div>
-  <div class="menu-item">Fragancias (Próximamente)</div>
-  <div class="menu-item">Relojes (Próximamente)</div>
-  <div class="menu-item">Cintos (Próximamente)</div>
+  <span class="menu-close" id="menuClose">✕</span>
+  <div class="menu-item" data-section="gorras">Gorras</div>
+  <div class="menu-item" data-section="camisetas">Camisetas</div>
+  <div class="menu-item" data-section="sudaderas">Sudaderas</div>
+  <div class="menu-item" data-section="tenis">Tenis</div>
+  <div class="menu-item" data-section="fragancias">Fragancias</div>
+  <div class="menu-item" data-section="relojes">Relojes</div>
+  <div class="menu-item" data-section="cintos">Cintos</div>
 </div>
 
-<main>
-  <div class="breadcrumbs">INICIO &gt; PRODUCTOS</div>
+<main id="mainContent">
   <h1 class="page-title">Productos disponibles</h1>
-
-  <div class="search-bar" id="searchBar">
-    <input type="text" id="searchInput" placeholder="Buscar producto (ej. 'CT', 'gorras', etc.)">
-  </div>
-
-  <div class="controls">
-    <button id="filterBtn">Filtrar y ordenar ▾</button>
-    <div id="productCount">3 productos</div>
-  </div>
-
   <section class="grid" id="productsGrid">
     <div class="card" data-name="Gorra Galaxy CT" data-price="18000" onclick="window.location='producto1.html'">
       <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
@@ -142,14 +125,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
         <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
       </div>
     </div>
-    <div class="card" data-name="Gorra Oriental Tumbado" data-price="3300" onclick="window.location='producto3.html'">
-      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
-        <div class="price">$3,300.00</div>
-        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
-      </div>
-    </div>
   </section>
 </main>
 
@@ -159,10 +134,12 @@ main{max-width:1200px;margin:auto;padding:20px;}
     <span>Carrito</span>
     <span id="closeCart" style="cursor:pointer;">✕</span>
   </div>
-  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">Tu carrito está vacío 🛍️</div>
+  </div>
   <div class="cart-footer" id="cartFooter">
     <div class="cart-total" id="cartTotal">Total: $0</div>
-    <div class="payment-options" id="paymentOptions">
+    <div class="payment-options">
       <button class="pay-btn paypal" id="paypalBtn">
         <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
         Pagar con PayPal
@@ -183,40 +160,22 @@ const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 const menuOverlay = document.getElementById('menuOverlay');
-const closeMenu = document.getElementById('closeMenu');
+const menuClose = document.getElementById('menuClose');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
 const addBtns = document.querySelectorAll('.add-btn');
-const searchBar = document.getElementById('searchBar');
-const searchInput = document.getElementById('searchInput');
-const paymentOptions = document.getElementById('paymentOptions');
+const cartFooter = document.getElementById('cartFooter');
 let cart = [];
+
+menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
+menuOverlay.onclick = closeMenu;
+menuClose.onclick = closeMenu;
+function closeMenu(){ menuDropdown.classList.remove('open'); menuOverlay.classList.remove('show'); }
 
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
 closeCart.onclick = ()=> cartPanel.classList.remove('open');
-
-menuBtn.onclick = () => {
-  menuDropdown.classList.toggle('open');
-  menuOverlay.classList.toggle('show');
-};
-menuOverlay.onclick = closeMenu.onclick = () => {
-  menuDropdown.classList.remove('open');
-  menuOverlay.classList.remove('show');
-};
-
-searchBtn.onclick = () => {
-  searchBar.style.display = searchBar.style.display === 'block' ? 'none' : 'block';
-  searchInput.focus();
-};
-searchInput.addEventListener('input', e => {
-  const term = e.target.value.trim().toLowerCase();
-  document.querySelectorAll('.card').forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    card.style.display = name.includes(term) ? 'flex' : 'none';
-  });
-});
 
 addBtns.forEach(btn=>{
   btn.onclick = e=>{
@@ -232,6 +191,11 @@ addBtns.forEach(btn=>{
 
 function renderCart(){
   cartItems.innerHTML = "";
+  if(cart.length === 0){
+    cartItems.innerHTML = '<div class="cart-empty">Tu carrito está vacío 🛍️</div>';
+    document.getElementById('cartTotal').textContent = "Total: $0";
+    return;
+  }
   let total = 0;
   cart.forEach((p,i)=>{
     const item = document.createElement('div');
@@ -243,13 +207,9 @@ function renderCart(){
     total += p.price;
   });
   document.getElementById('cartTotal').textContent = "Total: $" + total.toLocaleString('es-MX');
-  paymentOptions.style.display = cart.length > 0 ? 'flex' : 'none';
 }
 
-function removeItem(index){
-  cart.splice(index,1);
-  renderCart();
-}
+function removeItem(i){ cart.splice(i,1); renderCart(); }
 
 function showToast(msg){
   toast.textContent = msg;
@@ -257,12 +217,23 @@ function showToast(msg){
   setTimeout(()=> toast.classList.remove('show'), 2000);
 }
 
-document.getElementById('paypalBtn').onclick = ()=>{
-  alert("Redirigiendo a PayPal (simulado)...");
-};
-document.getElementById('cardBtn').onclick = ()=>{
-  alert("Procesando pago con tarjeta (simulado)...");
-};
+// Mostrar "Próximamente"
+document.querySelectorAll('.menu-item').forEach(item=>{
+  item.onclick = ()=>{
+    if(item.dataset.section!=="gorras"){
+      document.getElementById("mainContent").innerHTML=`
+      <div class='proximamente-box'>
+        <img src='https://cdn-icons-png.flaticon.com/512/814/814513.png'>
+        <h2>Próximamente</h2>
+        <p>Esta sección estará disponible muy pronto.</p>
+      </div>`;
+      closeMenu();
+    }
+  }
+});
+
+document.getElementById('paypalBtn').onclick = ()=>alert("Redirigiendo a PayPal (simulado)...");
+document.getElementById('cardBtn').onclick = ()=>alert("Procesando pago con tarjeta (simulado)...");
 </script>
 </body>
 </html>
