@@ -257,7 +257,7 @@ addToCartBtn.onclick = (e) => {
   e.preventDefault();
   const qty = Math.max(1, parseInt(qtyInput.value) || 1);
   for(let i=0;i<qty;i++){
-    cart.push({name: 'Gorra Barbas Hats x CT "GALAXY CT"', price: 18000});
+    cart.push({name: 'Gorra Barbas Hats x CT \"GALAXY CT\"', price: 18000});
   }
   renderCart();
   animateCartIcon();
@@ -342,7 +342,6 @@ renderCart();
 
 /* make removeItem global so inline handlers work */
 window.removeItem = removeItem;
-window.location = window.location; // keep reference
 </script>
 </body>
 </html>
