@@ -1,166 +1,218 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Space Shop</title>
-<style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-    background: radial-gradient(circle at 50% 55%, #010104, #000000 80%);
-    font-family: 'Poppins', sans-serif;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>DROP-SHOP - Caps</title>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111;
+      --muted:#777;
+      --accent:#ffb800;
+      --max-width:1200px;
+      --card-shadow: 0 8px 20px rgba(18,18,18,0.06);
+      --gap:22px;
+      --radius:6px;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:20px;}
 
-  canvas {
-    display: block;
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0; left: 0;
-    z-index: 0;
-    image-rendering: crisp-edges;
-    filter: brightness(0.95) contrast(1.1) saturate(1.05);
-  }
+    /* header */
+    header.site-header{border-bottom:1px solid #eee;background:#fff;position:sticky;top:0;z-index:50}
+    .header-inner{display:flex;align-items:center;gap:12px;padding:12px 20px}
+    .burger{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+    .burger span{display:block;width:18px;height:2px;background:#111;margin:3px 0;border-radius:2px}
+    .logo{font-weight:800;font-size:24px;letter-spacing:1px}
+    .header-actions{margin-left:auto;display:flex;gap:12px;align-items:center}
+    .icon{width:28px;height:28px;display:inline-grid;place-items:center;border-radius:6px}
 
-  /* HEADER */
-  header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 5;
-    padding: 18px 50px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(6px);
-  }
+    /* breadcrumb / title */
+    .title-row{display:flex;align-items:center;justify-content:space-between;padding:26px 0 8px}
+    .breadcrumbs{font-size:14px;color:var(--muted);font-weight:600}
+    .page-title{font-size:44px;font-weight:800;letter-spacing:1px;margin:6px 0}
 
-  header h1 {
-    color: #ffffff;
-    font-size: 1.6rem;
-    font-weight: 500;
-    letter-spacing: 1px;
-  }
+    /* controls */
+    .controls{display:flex;gap:12px;align-items:center;color:var(--muted);margin-bottom:18px}
+    .controls .filter{display:flex;gap:10px;align-items:center}
+    .controls select, .controls button{
+      background:#fff;border:1px solid #e6e6e6;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--text);
+      cursor:pointer;box-shadow:none;
+    }
+    .controls .count{font-size:14px;color:var(--muted);margin-left:auto}
 
-  nav {
-    display: flex;
-    gap: 30px;
-  }
+    /* product grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+      padding-bottom:60px;
+    }
+    @media(min-width:900px){
+      .grid{grid-template-columns: repeat(4, 1fr)}
+      .page-title{font-size:56px}
+    }
+    .card{
+      background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--card-shadow);display:flex;flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(10,10,10,0.08)}
+    .card img{width:100%;height:220px;object-fit:cover;background:#f2f2f2;display:block}
+    .card .meta{padding:12px 14px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+    .card .title{font-size:14px;font-weight:600;color:#111}
+    .card .subtitle{font-size:12px;color:var(--muted)}
+    .price{font-weight:800;font-size:18px;margin-top:auto}
 
-  nav a {
-    color: #e6e6e6;
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 400;
-    position: relative;
-    transition: all 0.3s ease;
-    padding: 8px 14px;
-    border-radius: 6px;
-  }
+    /* small footer bar to mimic phone indicator (visual only) */
+    .mobile-bottom {
+      display:none;
+    }
+    @media(max-width:420px){
+      .page-title{font-size:34px}
+      .grid{grid-template-columns:repeat(2,1fr);gap:16px}
+      .card img{height:160px}
+      .mobile-bottom{display:block;height:14px}
+    }
 
-  /* Efecto al pasar el puntero */
-  nav a:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-2px);
-    box-shadow: 0 2px 6px rgba(255,255,255,0.2);
-  }
-
-  /* Efecto al presionar */
-  nav a:active {
-    transform: translateY(1px);
-    box-shadow: 0 1px 2px rgba(255,255,255,0.2) inset;
-  }
-</style>
+    /* utilities */
+    .center{display:flex;align-items:center;justify-content:center}
+  </style>
 </head>
 <body>
-<canvas id="space"></canvas>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="burger" aria-hidden>
+        <span></span><span></span><span></span>
+      </div>
 
-<header>
-  <h1>Space Shop</h1>
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#">Nosotros</a>
-  </nav>
-</header>
+      <div class="logo">DROP-SHOP</div>
 
-<script>
-const canvas = document.getElementById("space");
-const ctx = canvas.getContext("2d");
-let stars = [];
-let w, h, ratio = window.devicePixelRatio || 1;
+      <div class="header-actions" aria-hidden>
+        <div class="icon" title="Buscar">🔍</div>
+        <div class="icon" title="Carrito">🛍️</div>
+      </div>
+    </div>
+  </header>
 
-function resize() {
-  w = window.innerWidth;
-  h = window.innerHeight;
-  canvas.width = w * ratio;
-  canvas.height = h * ratio;
-  ctx.scale(ratio, ratio);
-  generateStars();
-}
-window.addEventListener("resize", resize);
+  <main class="container" role="main">
+    <div class="title-row">
+      <div>
+        <div class="breadcrumbs">CAPS &gt; BARBAS HATS</div>
+        <h1 class="page-title">CAPS &gt; BARBAS HATS</h1>
+      </div>
+      <div class="controls" style="min-width:200px;">
+        <div class="filter">
+          <button id="filterBtn">Filtrar y ordenar ▾</button>
+        </div>
+        <div class="count" id="productCount">4 productos</div>
+      </div>
+    </div>
 
-function generateStars() {
-  stars = [];
-  const layers = [
-    { count: 500, depth: 0.3 },
-    { count: 300, depth: 0.6 },
-    { count: 150, depth: 1.0 }
-  ];
-  
-  layers.forEach(layer => {
-    for (let i = 0; i < layer.count; i++) {
-      stars.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        z: layer.depth,
-        size: (Math.random() * 0.6 + 0.1) * layer.depth,
-        brightness: Math.random() * 0.5 + 0.3,
-        hue: 210 + Math.random() * 10
-      });
+    <!-- filtros (oculto/ejemplo) -->
+    <div id="filterPanel" style="display:none;margin-bottom:14px;">
+      <!-- aquí podrías añadir checkboxes / selects -->
+      <label style="font-size:13px;color:var(--muted)">Ordenar:</label>
+      <select id="sortSelect">
+        <option value="featured">Destacados</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="name-asc">Nombre: A→Z</option>
+      </select>
+    </div>
+
+    <!-- GRID DE PRODUCTOS -->
+    <section class="grid" id="productsGrid">
+      <!-- Producto 1 -->
+      <article class="card" data-price="3300" data-name="Gorra Barbas Hats x CT 27 CT">
+        <img src="images/hat1.jpg" alt="Gorra Barbas 27 CT">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "27 CT"</div>
+          <div class="subtitle">$ 3,300.00</div>
+        </div>
+      </article>
+
+      <!-- Producto 2 -->
+      <article class="card" data-price="18000" data-name="Gorra Barbas Galaxy CT Gold">
+        <img src="images/hat2.jpg" alt="Gorra Galaxy CT">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
+          <div class="subtitle">$ 18,000.00</div>
+        </div>
+      </article>
+
+      <!-- Producto 3 -->
+      <article class="card" data-price="3300" data-name="Gorra Barbas Oriental Tumbado">
+        <img src="images/hat3.jpg" alt="Gorra Oriental">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
+          <div class="subtitle">$ 3,300.00</div>
+        </div>
+      </article>
+
+      <!-- Producto 4 -->
+      <article class="card" data-price="2800" data-name="Gorra Money Club">
+        <img src="images/hat4.jpg" alt="Gorra Money Club">
+        <div class="meta">
+          <div class="title">GORRA EL BARBAS HATS MONEY CLUB</div>
+          <div class="subtitle">$ 2,800.00</div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <div class="mobile-bottom"></div>
+
+  <script>
+    // Código JS mínimo para filtros/orden
+    const filterBtn = document.getElementById('filterBtn');
+    const filterPanel = document.getElementById('filterPanel');
+    const sortSelect = document.getElementById('sortSelect');
+    const grid = document.getElementById('productsGrid');
+    const productCount = document.getElementById('productCount');
+
+    filterBtn.addEventListener('click', ()=> {
+      filterPanel.style.display = filterPanel.style.display === 'none' ? 'block' : 'none';
+    });
+
+    function formatPrice(n){
+      // simple price formatting (mex)
+      return '$ ' + Number(n).toLocaleString('es-MX', {minimumFractionDigits: 2});
     }
-  });
-}
 
-function drawStars(mouseX = 0, mouseY = 0) {
-  ctx.fillStyle = "#010104";
-  ctx.fillRect(0, 0, w, h);
+    function updateCount(){
+      const total = grid.querySelectorAll('.card').length;
+      productCount.textContent = total + (total === 1 ? ' producto' : ' productos');
+    }
 
-  stars.forEach(star => {
-    const offsetX = (mouseX - w/2) * (1 - star.z) * 0.005; 
-    const offsetY = (mouseY - h/2) * (1 - star.z) * 0.005; 
-    const x = star.x + offsetX;
-    const y = star.y + offsetY;
+    function sortProducts(mode){
+      const cards = Array.from(grid.querySelectorAll('.card'));
+      let sorted;
+      if(mode === 'price-asc'){
+        sorted = cards.sort((a,b)=> Number(a.dataset.price) - Number(b.dataset.price));
+      } else if(mode === 'price-desc'){
+        sorted = cards.sort((a,b)=> Number(b.dataset.price) - Number(a.dataset.price));
+      } else if(mode === 'name-asc'){
+        sorted = cards.sort((a,b)=> a.dataset.name.localeCompare(b.dataset.name));
+      } else {
+        sorted = cards; // featured: keep original order
+      }
+      // re-append in order
+      sorted.forEach(c => grid.appendChild(c));
+    }
 
-    const grad = ctx.createRadialGradient(x, y, 0, x, y, star.size * 2.2);
-    grad.addColorStop(0, `hsl(${star.hue}, 40%, 96%)`);
-    grad.addColorStop(0.4, `hsla(${star.hue}, 70%, 85%, 0.7)`);
-    grad.addColorStop(1, "transparent");
+    sortSelect.addEventListener('change', (e)=> sortProducts(e.target.value));
 
-    ctx.globalAlpha = star.brightness;
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.arc(x, y, star.size * 2.2, 0, Math.PI * 2);
-    ctx.fill();
-  });
-}
+    // Iniciar
+    updateCount();
 
-let mouse = { x: 0, y: 0 };
-window.addEventListener("mousemove", e => {
-  mouse.x = e.clientX;
-  mouse.y = e.clientY;
-});
-
-function animate() {
-  drawStars(mouse.x, mouse.y);
-  requestAnimationFrame(animate);
-}
-
-resize();
-animate();
-</script>
+    // Accessible keyboard support (Enter) for filter button
+    filterBtn.addEventListener('keydown', (e)=> {
+      if(e.key === 'Enter') filterBtn.click();
+    });
+  </script>
 </body>
+  
 </html>
