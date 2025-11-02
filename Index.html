@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tienda de Efraín</title>
+<title>Boutique Buendía</title>
 <style>
-/* --- estilos idénticos a los tuyos, sin cambios --- */
 :root {
   --bg: #ffffff;
   --text: #111111;
@@ -51,7 +50,7 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
 .cart-footer{border-top:1px solid #ccc;padding:16px;}
 .cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
-.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+.payment-options{display:none;flex-direction:column;gap:10px;margin-top:10px;}
 .pay-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:15px;cursor:pointer;}
 .paypal{background:#ffc439;color:#111;}
 .paypal img{height:18px;}
@@ -71,6 +70,16 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .menu-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.2);z-index: 24;
   opacity: 0;visibility: hidden;transition: opacity 0.3s ease;}
 .menu-overlay.show {opacity: 1;visibility: visible;}
+#closeMenu {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 22px;
+  cursor: pointer;
+  font-weight: 800;
+  color: var(--text);
+}
+#closeMenu:hover { color: var(--accent); }
 </style>
 </head>
 <body>
@@ -78,7 +87,7 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <header>
   <div class="header-inner">
     <div id="menuBtn" title="Menú">☰</div>
-    <div class="logo">Tienda de Efraín</div>
+    <div class="logo">Boutique Buendía</div>
     <div class="header-actions">
       <div id="searchBtn" class="icon" title="Buscar">
         <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar" width="22">
@@ -93,13 +102,14 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <!-- Menú -->
 <div class="menu-overlay" id="menuOverlay"></div>
 <div class="menu-dropdown" id="menuDropdown">
-  <div class="menu-item">Gorras</div>
-  <div class="menu-item">Camisetas</div>
-  <div class="menu-item">Sudaderas</div>
-  <div class="menu-item">Tenis</div>
-  <div class="menu-item">Fragancias</div>
-  <div class="menu-item">Relojes</div>
-  <div class="menu-item">Cintos</div>
+  <div id="closeMenu">✕</div>
+  <div class="menu-item" onclick="window.location.href='index.html'">Gorras</div>
+  <div class="menu-item">Camisetas (Próximamente)</div>
+  <div class="menu-item">Sudaderas (Próximamente)</div>
+  <div class="menu-item">Tenis (Próximamente)</div>
+  <div class="menu-item">Fragancias (Próximamente)</div>
+  <div class="menu-item">Relojes (Próximamente)</div>
+  <div class="menu-item">Cintos (Próximamente)</div>
 </div>
 
 <main>
@@ -150,9 +160,9 @@ main{max-width:1200px;margin:auto;padding:20px;}
     <span id="closeCart" style="cursor:pointer;">✕</span>
   </div>
   <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
+  <div class="cart-footer" id="cartFooter">
     <div class="cart-total" id="cartTotal">Total: $0</div>
-    <div class="payment-options">
+    <div class="payment-options" id="paymentOptions">
       <button class="pay-btn paypal" id="paypalBtn">
         <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
         Pagar con PayPal
@@ -168,12 +178,12 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <div class="toast" id="toast">Producto agregado al carrito</div>
 
 <script>
-/* --- JS igual, solo ajustado para que los botones de carrito no abran la redirección --- */
 const cartBtn = document.getElementById('cartBtn');
 const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 const menuOverlay = document.getElementById('menuOverlay');
+const closeMenu = document.getElementById('closeMenu');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
@@ -181,6 +191,7 @@ const cartItems = document.getElementById('cartItems');
 const addBtns = document.querySelectorAll('.add-btn');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
+const paymentOptions = document.getElementById('paymentOptions');
 let cart = [];
 
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
@@ -190,7 +201,7 @@ menuBtn.onclick = () => {
   menuDropdown.classList.toggle('open');
   menuOverlay.classList.toggle('show');
 };
-menuOverlay.onclick = () => {
+menuOverlay.onclick = closeMenu.onclick = () => {
   menuDropdown.classList.remove('open');
   menuOverlay.classList.remove('show');
 };
@@ -232,6 +243,7 @@ function renderCart(){
     total += p.price;
   });
   document.getElementById('cartTotal').textContent = "Total: $" + total.toLocaleString('es-MX');
+  paymentOptions.style.display = cart.length > 0 ? 'flex' : 'none';
 }
 
 function removeItem(index){
