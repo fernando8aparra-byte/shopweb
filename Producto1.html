@@ -1,293 +1,348 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gorra Negra - Boutique Buendía</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: "Poppins", sans-serif;
-      background: linear-gradient(to bottom, #fff, #f2f2f2);
-      color: #222;
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gorra Barbas Hats x CT "GALAXY CT" - Boutique Buendía</title>
+<style>
+:root{
+  --bg:#fff;
+  --text:#111;
+  --muted:#777;
+  --card-bg:#fff;
+  --accent:#7c4dff;
+  --shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:40;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+#menuBtn{cursor:pointer;font-size:26px;}
+.logo{font-weight:900;font-size:20px;letter-spacing:1px;}
+.header-actions{display:flex;gap:12px;align-items:center;}
+.icon img{width:22px;height:22px;display:block;}
 
-    header {
-      background-color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+/* main */
+main{max-width:1200px;margin:24px auto;padding:0 20px 80px;}
+.breadcrumbs{font-size:13px;color:var(--muted);margin-bottom:12px;}
+.product-wrap{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;}
+.product-media{flex:1 1 420px;min-width:300px;max-width:520px;}
+.product-media img{width:100%;height:auto;border-radius:12px;box-shadow:var(--shadow);object-fit:contain;background:#fafafa;}
+.product-info{flex:1 1 420px;min-width:300px;}
+.page-title{font-size:26px;margin-bottom:8px;font-weight:800;}
+.price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:12px;}
+.desc{color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.qty-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.qty-row input{width:80px;padding:8px;border-radius:8px;border:1px solid #ddd;text-align:center;font-size:15px;}
+.add-btn{background:var(--accent);color:#fff;border:none;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;}
+.add-btn:hover{opacity:0.95;}
 
-    header h1 {
-      font-size: 1.3em;
-      color: #111;
-    }
+/* payment buttons */
+.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;max-width:340px;}
+.pay-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;border-radius:8px;border:none;font-weight:800;cursor:pointer;}
+.paypal{background:#ffc439;color:#111;}
+.paypal img{height:20px;}
+.cardpay{background:#0070ba;color:#fff;}
+.cardpay img{height:20px;filter:invert(1);}
 
-    .menu-icon {
-      font-size: 26px;
-      cursor: pointer;
-    }
+/* related */
+.related{margin-top:48px;}
+.related h2{font-size:20px;margin-bottom:14px;font-weight:800;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .18s;}
+.card:hover{transform:translateY(-6px);}
+.card img{width:100%;height:220px;object-fit:contain;background:#fafafa;}
+.meta{padding:12px;}
+.meta .title{font-weight:700;font-size:14px;margin-bottom:8px;}
+.meta .price{font-weight:800;color:var(--text);}
 
-    .menu {
-      position: fixed;
-      top: 0;
-      left: -100%;
-      width: 250px;
-      height: 100%;
-      background: #fff;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
-      transition: 0.3s;
-      z-index: 20;
-      padding: 20px;
-    }
+/* menu */
+.menu-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.2);z-index:30;opacity:0;visibility:hidden;transition:.25s;}
+.menu-overlay.show{opacity:1;visibility:visible;}
+.menu-dropdown{position:fixed;top:0;left:-300px;width:260px;height:100%;background:var(--card-bg);box-shadow:2px 0 12px rgba(0,0,0,0.12);padding:56px 18px 20px;z-index:35;transition:left .28s;}
+.menu-dropdown.open{left:0;}
+.menu-close{position:absolute;top:12px;right:16px;font-size:20px;cursor:pointer;}
+.menu-item{padding:14px 0;border-bottom:2px solid #eee;font-weight:700;cursor:pointer;text-align:left;color:var(--text);}
+.menu-item.prox{color:var(--muted);font-weight:700;display:flex;gap:10px;align-items:center;}
 
-    .menu.active {
-      left: 0;
-    }
+/* carrito lateral */
+.cart-panel{position:fixed;top:0;right:-400px;width:360px;height:100%;background:var(--card-bg);box-shadow:-6px 0 30px rgba(0,0,0,0.12);transition:right .28s;display:flex;flex-direction:column;z-index:45;}
+.cart-panel.open{right:0;}
+.cart-header{padding:16px;font-weight:800;border-bottom:1px solid #e6e6e6;display:flex;justify-content:space-between;align-items:center;}
+.cart-items{flex:1;overflow:auto;padding:14px;}
+.cart-empty{text-align:center;color:var(--muted);padding:48px 8px;font-weight:600;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #f2f2f2;}
+.cart-footer{padding:16px;border-top:1px solid #eee;}
 
-    .close-menu {
-      font-size: 20px;
-      float: right;
-      cursor: pointer;
-    }
+/* cart total / payment area collapsible */
+.cart-total{font-weight:900;text-align:right;margin-bottom:12px;}
+.payment-area{display:none;flex-direction:column;gap:10px;}
+.payment-area.show{display:flex;}
 
-    .menu h2 {
-      margin-top: 40px;
-      margin-bottom: 20px;
-      font-size: 1.2em;
-    }
+/* toast */
+.toast{position:fixed;left:50%;transform:translateX(-50%) translateY(30px);bottom:18px;background:var(--accent);color:#fff;padding:14px 20px;border-radius:10px;font-weight:800;box-shadow:0 8px 30px rgba(0,0,0,0.15);opacity:0;pointer-events:none;transition:all .35s;z-index:60;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-    .menu a {
-      display: block;
-      text-decoration: none;
-      color: #333;
-      padding: 10px 0;
-      border-bottom: 1px solid #eee;
-    }
+/* shake animation applied to cart icon image */
+@keyframes shake {
+  0%{transform:rotate(0deg)}
+  20%{transform:rotate(-12deg)}
+  40%{transform:rotate(12deg)}
+  60%{transform:rotate(-8deg)}
+  80%{transform:rotate(8deg)}
+  100%{transform:rotate(0deg)}
+}
+.shake{animation:shake .45s ease}
 
-    .menu a.disabled {
-      color: #aaa;
-      font-style: italic;
-    }
-
-    .product-container {
-      max-width: 1100px;
-      margin: 30px auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      justify-content: center;
-      align-items: flex-start;
-    }
-
-    .product-main {
-      flex: 1 1 350px;
-      text-align: center;
-    }
-
-    .product-main img {
-      width: 100%;
-      max-width: 400px;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .product-details {
-      flex: 1 1 300px;
-    }
-
-    .product-details h2 {
-      font-size: 1.6em;
-      margin-bottom: 10px;
-    }
-
-    .product-details p {
-      line-height: 1.5;
-    }
-
-    .price {
-      font-size: 1.4em;
-      font-weight: bold;
-      margin: 15px 0;
-    }
-
-    .payment-options {
-      margin-top: 20px;
-    }
-
-    .payment-options button {
-      width: 100%;
-      padding: 12px;
-      font-size: 1em;
-      border: none;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .payment-options button:hover {
-      transform: scale(1.03);
-    }
-
-    .add-to-cart {
-      background-color: #fff;
-      border: 1px solid #111;
-    }
-
-    .paypal {
-      background-color: #ffc439;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      font-weight: bold;
-    }
-
-    .paypal img {
-      height: 18px;
-    }
-
-    .more-options {
-      background: none;
-      color: #0070ba;
-      text-decoration: underline;
-    }
-
-    .related-products {
-      text-align: center;
-      margin: 50px auto;
-      max-width: 1100px;
-    }
-
-    .related-products h3 {
-      margin-bottom: 20px;
-      font-size: 1.4em;
-    }
-
-    .related-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 25px;
-    }
-
-    .related-item {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .related-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-    }
-
-    .success-message {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background-color: #4caf50;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      animation: fadeInOut 2s ease;
-      z-index: 50;
-    }
-
-    @keyframes fadeInOut {
-      0% {opacity: 0;}
-      10% {opacity: 1;}
-      90% {opacity: 1;}
-      100% {opacity: 0;}
-    }
-  </style>
+/* responsive */
+@media (max-width:900px){
+  .product-wrap{flex-direction:column;}
+  .product-media,.product-info{max-width:900px;}
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>Boutique Buendía</h1>
-    <span class="menu-icon" onclick="toggleMenu()">☰</span>
-  </header>
 
-  <div class="menu" id="menu">
-    <span class="close-menu" onclick="toggleMenu()">✕</span>
-    <h2>Categorías</h2>
-    <a href="index.html">Gorras</a>
-    <a class="disabled">Próximamente</a>
-    <a class="disabled">Próximamente</a>
-    <a class="disabled">Próximamente</a>
-  </div>
-
-  <div class="success-message" id="successMessage">¡Producto agregado al carrito!</div>
-
-  <div class="product-container">
-    <div class="product-main">
-      <img src="https://i.imgur.com/CkFfM3F.png" alt="Gorra Negra">
-    </div>
-    <div class="product-details">
-      <h2>Gorra Negra Clásica</h2>
-      <p>Una gorra versátil de estilo moderno, ideal para cualquier ocasión. Fabricada con materiales de alta calidad para máxima comodidad y durabilidad.</p>
-      <div class="price">$499 MXN</div>
-      <div class="payment-options">
-        <button class="add-to-cart" onclick="addToCart()">Agregar al carrito</button>
-        <button class="paypal"><img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal">Pagar con PayPal</button>
-        <button class="more-options">Más opciones de pago</button>
+<header>
+  <div class="header-inner">
+    <div id="menuBtn">☰</div>
+    <div class="logo">Boutique Buendía</div>
+    <div class="header-actions">
+      <div id="cartBtn" class="icon" title="Carrito">
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito">
       </div>
     </div>
   </div>
+</header>
 
-  <div class="related-products">
-    <h3>También podría interesarte</h3>
-    <div class="related-grid">
-      <div class="related-item">
-        <img src="https://i.imgur.com/f2uZbXy.png" alt="Gorra Azul">
-        <p>Gorra Azul Marino</p>
+<!-- menu -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="menu-dropdown" id="menuDropdown">
+  <div class="menu-close" id="menuClose">✕</div>
+  <div class="menu-item" onclick="location.href='index.html'">Gorras</div>
+  <div class="menu-item prox"><span>🏷</span> Camisetas <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+  <div class="menu-item prox"><span>🧥</span> Sudaderas <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+  <div class="menu-item prox"><span>👟</span> Tenis <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+  <div class="menu-item prox"><span>🕯</span> Fragancias <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+  <div class="menu-item prox"><span>⌚</span> Relojes <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+  <div class="menu-item prox"><span>🎒</span> Cintos <small style="margin-left:auto;color:var(--muted);font-weight:700;">Próximamente</small></div>
+</div>
+
+<main>
+  <div class="breadcrumbs">INICIO &gt; Gorras &gt; GALAXY CT</div>
+
+  <section class="product-wrap">
+    <div class="product-media">
+      <!-- imagen principal (no modificar URL) -->
+      <img src="http://imgfz.com/i/TBumyjZ.webp" alt='Gorra Barbas Hats x CT "GALAXY CT"'>
+    </div>
+
+    <div class="product-info">
+      <div class="page-title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
+      <div class="price">$18,000.00</div>
+      <div class="desc">
+        Edición limitada "GALAXY CT" con baño 24K en detalles. Bordado y confección premium. Ajuste regulable y materiales de alta calidad.
       </div>
-      <div class="related-item">
-        <img src="https://i.imgur.com/W4xq8aP.png" alt="Gorra Blanca">
-        <p>Gorra Blanca Clásica</p>
+
+      <div class="qty-row">
+        <label for="qty">Cantidad</label>
+        <input id="qty" type="number" min="1" value="1" />
+      </div>
+
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <button class="add-btn" id="addToCartBtn">Agregar al carrito</button>
+
+        <div style="min-width:240px;">
+          <div class="payment-options" aria-hidden="true" style="pointer-events:none;opacity:0.95;">
+            <button class="pay-btn paypal" onclick="paypalSimulate(event)">
+              <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal"> Pagar con PayPal
+            </button>
+            <button class="pay-btn cardpay" onclick="cardSimulate(event)">
+              <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Tarjeta"> Pagar con Tarjeta
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- related -->
+  <section class="related">
+    <h2>También podría interesarte</h2>
+    <div class="grid">
+      <div class="card" onclick="location.href='producto2.html'">
+        <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="STAR CT">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
+          <div class="price">$4,500.00</div>
+        </div>
+      </div>
+
+      <div class="card" onclick="location.href='producto3.html'">
+        <img src="http://imgfz.com/i/P9gF7m8.webp" alt="ORIENTAL TUMBADO">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
+          <div class="price">$3,300.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- carrito lateral -->
+<div class="cart-panel" id="cartPanel" aria-hidden="true">
+  <div class="cart-header">
+    <span>Carrito</span>
+    <span id="closeCart" style="cursor:pointer;">✕</span>
   </div>
 
-  <script>
-    function toggleMenu() {
-      document.getElementById('menu').classList.toggle('active');
-    }
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">Tu carrito está vacío 🛍️</div>
+  </div>
 
-    function addToCart() {
-      const success = document.getElementById('successMessage');
-      success.style.display = 'block';
-      setTimeout(() => {
-        success.style.display = 'none';
-      }, 2000);
+  <div class="cart-footer">
+    <div class="cart-total" id="cartTotal">Total: $0</div>
 
-      const cart = document.querySelector('.menu-icon');
-      cart.style.animation = 'shake 0.4s';
-      setTimeout(() => cart.style.animation = '', 400);
-    }
+    <div class="payment-area" id="paymentArea">
+      <button class="pay-btn paypal" id="paypalCheckout"><img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal"> Pagar con PayPal</button>
+      <button class="pay-btn cardpay" id="cardCheckout"><img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Tarjeta"> Pagar con Tarjeta</button>
+    </div>
+  </div>
+</div>
 
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes shake {
-        0%, 100% { transform: rotate(0deg); }
-        25% { transform: rotate(-10deg); }
-        75% { transform: rotate(10deg); }
-      }
-    `;
-    document.head.appendChild(style);
-  </script>
+<!-- toast -->
+<div class="toast" id="toast">Producto agregado con éxito 🛒</div>
+
+<script>
+/* ------------------------------
+   Elementos
+   ------------------------------ */
+const menuBtn = document.getElementById('menuBtn');
+const menuDropdown = document.getElementById('menuDropdown');
+const menuOverlay = document.getElementById('menuOverlay');
+const menuClose = document.getElementById('menuClose');
+
+const cartBtn = document.getElementById('cartBtn');
+const cartPanel = document.getElementById('cartPanel');
+const closeCart = document.getElementById('closeCart');
+
+const addToCartBtn = document.getElementById('addToCartBtn');
+const qtyInput = document.getElementById('qty');
+const cartItemsEl = document.getElementById('cartItems');
+const cartTotalEl = document.getElementById('cartTotal');
+const paymentArea = document.getElementById('paymentArea');
+const toast = document.getElementById('toast');
+
+/* carrito local a esta página (no persiste entre páginas) */
+let cart = [];
+
+/* ------------------------------
+   Menú lateral
+   ------------------------------ */
+menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
+menuClose && (menuClose.onclick = closeMenu);
+menuOverlay.onclick = closeMenu;
+function closeMenu(){ menuDropdown.classList.remove('open'); menuOverlay.classList.remove('show'); }
+
+/* ------------------------------
+   Carrito panel
+   ------------------------------ */
+cartBtn.onclick = () => { cartPanel.classList.add('open'); cartPanel.setAttribute('aria-hidden','false'); };
+closeCart.onclick = () => { cartPanel.classList.remove('open'); cartPanel.setAttribute('aria-hidden','true'); };
+
+/* ------------------------------
+   Agregar al carrito
+   ------------------------------ */
+addToCartBtn.onclick = (e) => {
+  e.preventDefault();
+  const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+  for(let i=0;i<qty;i++){
+    cart.push({name: 'Gorra Barbas Hats x CT "GALAXY CT"', price: 18000});
+  }
+  renderCart();
+  animateCartIcon();
+  showToast('Producto agregado con éxito 🛒');
+};
+
+/* ------------------------------
+   Render carrito
+   ------------------------------ */
+function renderCart(){
+  cartItemsEl.innerHTML = '';
+  if(cart.length === 0){
+    cartItemsEl.innerHTML = '<div class="cart-empty">Tu carrito está vacío 🛍️</div>';
+    cartTotalEl.textContent = 'Total: $0';
+    paymentArea.classList.remove('show');
+    return;
+  }
+  let total = 0;
+  cart.forEach((p,i)=>{
+    const row = document.createElement('div');
+    row.className = 'cart-item';
+    row.innerHTML = `<div>${p.name}</div><div>$${p.price.toLocaleString('es-MX')}</div>
+                     <button onclick="removeItem(${i})" style="margin-left:12px;background:none;border:none;color:var(--accent);font-weight:700;cursor:pointer;">✕</button>`;
+    cartItemsEl.appendChild(row);
+    total += p.price;
+  });
+  cartTotalEl.textContent = 'Total: $' + total.toLocaleString('es-MX');
+  paymentArea.classList.add('show'); // mostrar área de pago si hay productos
+}
+
+/* ------------------------------
+   Remover item
+   ------------------------------ */
+function removeItem(index){
+  cart.splice(index,1);
+  renderCart();
+}
+
+/* ------------------------------
+   Animar icono carrito (shake)
+   ------------------------------ */
+function animateCartIcon(){
+  const img = cartBtn.querySelector('img');
+  if(!img) return;
+  img.classList.add('shake');
+  setTimeout(()=> img.classList.remove('shake'), 480);
+}
+
+/* ------------------------------
+   Toast (mejorado)
+   ------------------------------ */
+let toastTimeout = null;
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(()=> toast.classList.remove('show'), 2400);
+}
+
+/* ------------------------------
+   Simular pagos (demo)
+   ------------------------------ */
+function paypalSimulate(e){
+  e && e.stopPropagation();
+  alert('Redirigiendo a PayPal (simulado)...');
+}
+function cardSimulate(e){
+  e && e.stopPropagation();
+  alert('Procesando pago con tarjeta (simulado)...');
+}
+
+/* ------------------------------
+   Checkout buttons in cart
+   ------------------------------ */
+document.getElementById('paypalCheckout').onclick = () => { paypalSimulate(); };
+document.getElementById('cardCheckout').onclick = () => { cardSimulate(); };
+
+/* ------------------------------
+   Inicializar (asegurar estado)
+   ------------------------------ */
+renderCart();
+
+/* make removeItem global so inline handlers work */
+window.removeItem = removeItem;
+window.location = window.location; // keep reference
+</script>
 </body>
 </html>
