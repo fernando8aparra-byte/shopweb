@@ -1,218 +1,194 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>DROP-SHOP - Caps</title>
-  <style>
-    :root{
-      --bg:#ffffff;
-      --text:#111;
-      --muted:#777;
-      --accent:#ffb800;
-      --max-width:1200px;
-      --card-shadow: 0 8px 20px rgba(18,18,18,0.06);
-      --gap:22px;
-      --radius:6px;
-      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:var(--max-width);margin:0 auto;padding:20px;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ferv - Caps</title>
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #777;
+  --card-bg: #fff;
+  --accent: #7c4dff;
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+body.dark {
+  --bg: #121212;
+  --text: #f5f5f5;
+  --muted: #aaa;
+  --card-bg: #1e1e1e;
+  --shadow: 0 8px 20px rgba(255,255,255,0.05);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);transition:.3s background,.3s color;}
+header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+.logo{font-size:24px;font-weight:900;letter-spacing:1px;}
+.header-actions{display:flex;align-items:center;gap:14px;}
+.icon{cursor:pointer;font-size:20px;}
+main{max-width:1200px;margin:auto;padding:20px;}
+.breadcrumbs{font-size:14px;color:var(--muted);font-weight:600;}
+.page-title{font-size:38px;margin:6px 0 14px;font-weight:800;}
+.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.controls button{background:var(--card-bg);border:1px solid #ccc;padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
+.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
+.card:hover{transform:translateY(-4px);}
+.card img{width:100%;height:200px;object-fit:cover;background:#f2f2f2;}
+.card .meta{padding:14px;flex:1;display:flex;flex-direction:column;}
+.card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
+.card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
+.card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
+.card button:hover{opacity:0.9;}
 
-    /* header */
-    header.site-header{border-bottom:1px solid #eee;background:#fff;position:sticky;top:0;z-index:50}
-    .header-inner{display:flex;align-items:center;gap:12px;padding:12px 20px}
-    .burger{width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer}
-    .burger span{display:block;width:18px;height:2px;background:#111;margin:3px 0;border-radius:2px}
-    .logo{font-weight:800;font-size:24px;letter-spacing:1px}
-    .header-actions{margin-left:auto;display:flex;gap:12px;align-items:center}
-    .icon{width:28px;height:28px;display:inline-grid;place-items:center;border-radius:6px}
+/* carrito lateral */
+.cart-panel{
+  position:fixed;top:0;right:-400px;width:340px;height:100%;background:var(--card-bg);
+  box-shadow:-4px 0 20px rgba(0,0,0,0.2);transition:right .3s ease;display:flex;flex-direction:column;z-index:100;
+}
+.cart-panel.open{right:0;}
+.cart-header{padding:16px;font-size:20px;font-weight:700;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;align-items:center;}
+.cart-items{flex:1;overflow-y:auto;padding:14px;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;}
+.cart-footer{border-top:1px solid #ccc;padding:16px;}
+.cart-footer button{width:100%;background:var(--accent);color:#fff;border:none;padding:12px;font-weight:700;border-radius:8px;cursor:pointer;}
+.cart-footer button:hover{opacity:0.9;}
 
-    /* breadcrumb / title */
-    .title-row{display:flex;align-items:center;justify-content:space-between;padding:26px 0 8px}
-    .breadcrumbs{font-size:14px;color:var(--muted);font-weight:600}
-    .page-title{font-size:44px;font-weight:800;letter-spacing:1px;margin:6px 0}
+/* notificación */
+.toast{
+  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
+  background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;
+}
+.toast.show{opacity:1;bottom:60px;}
 
-    /* controls */
-    .controls{display:flex;gap:12px;align-items:center;color:var(--muted);margin-bottom:18px}
-    .controls .filter{display:flex;gap:10px;align-items:center}
-    .controls select, .controls button{
-      background:#fff;border:1px solid #e6e6e6;padding:10px 12px;border-radius:8px;font-size:14px;color:var(--text);
-      cursor:pointer;box-shadow:none;
-    }
-    .controls .count{font-size:14px;color:var(--muted);margin-left:auto}
-
-    /* product grid */
-    .grid{
-      display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--gap);
-      padding-bottom:60px;
-    }
-    @media(min-width:900px){
-      .grid{grid-template-columns: repeat(4, 1fr)}
-      .page-title{font-size:56px}
-    }
-    .card{
-      background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--card-shadow);display:flex;flex-direction:column;
-      transition:transform .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{transform:translateY(-6px);box-shadow:0 18px 36px rgba(10,10,10,0.08)}
-    .card img{width:100%;height:220px;object-fit:cover;background:#f2f2f2;display:block}
-    .card .meta{padding:12px 14px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
-    .card .title{font-size:14px;font-weight:600;color:#111}
-    .card .subtitle{font-size:12px;color:var(--muted)}
-    .price{font-weight:800;font-size:18px;margin-top:auto}
-
-    /* small footer bar to mimic phone indicator (visual only) */
-    .mobile-bottom {
-      display:none;
-    }
-    @media(max-width:420px){
-      .page-title{font-size:34px}
-      .grid{grid-template-columns:repeat(2,1fr);gap:16px}
-      .card img{height:160px}
-      .mobile-bottom{display:block;height:14px}
-    }
-
-    /* utilities */
-    .center{display:flex;align-items:center;justify-content:center}
-  </style>
+/* modo oscuro toggle */
+#darkToggle{font-size:18px;cursor:pointer;}
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="burger" aria-hidden>
-        <span></span><span></span><span></span>
-      </div>
 
-      <div class="logo">DROP-SHOP</div>
+<header>
+  <div class="header-inner">
+    <div class="logo">Ferv</div>
+    <div class="header-actions">
+      <div id="darkToggle" title="Modo oscuro">🌙</div>
+      <div id="cartBtn" class="icon" title="Carrito">🛒</div>
+    </div>
+  </div>
+</header>
 
-      <div class="header-actions" aria-hidden>
-        <div class="icon" title="Buscar">🔍</div>
-        <div class="icon" title="Carrito">🛍️</div>
+<main>
+  <div class="breadcrumbs">CAPS &gt; BARBAS HATS</div>
+  <h1 class="page-title">CAPS &gt; BARBAS HATS</h1>
+  <div class="controls">
+    <button id="filterBtn">Filtrar y ordenar ▾</button>
+    <div id="productCount">4 productos</div>
+  </div>
+
+  <section class="grid" id="productsGrid">
+    <div class="card" data-name="Gorra 27 CT" data-price="3300">
+      <img src="https://via.placeholder.com/400x300?text=27+CT" alt="Gorra 27 CT">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "27 CT"</div>
+        <div class="price">$3,300.00</div>
+        <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
-  </header>
-
-  <main class="container" role="main">
-    <div class="title-row">
-      <div>
-        <div class="breadcrumbs">CAPS &gt; BARBAS HATS</div>
-        <h1 class="page-title">CAPS &gt; BARBAS HATS</h1>
-      </div>
-      <div class="controls" style="min-width:200px;">
-        <div class="filter">
-          <button id="filterBtn">Filtrar y ordenar ▾</button>
-        </div>
-        <div class="count" id="productCount">4 productos</div>
+    <div class="card" data-name="Gorra Galaxy" data-price="18000">
+      <img src="https://via.placeholder.com/400x300?text=Galaxy+CT" alt="Gorra Galaxy">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
+        <div class="price">$18,000.00</div>
+        <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
-
-    <!-- filtros (oculto/ejemplo) -->
-    <div id="filterPanel" style="display:none;margin-bottom:14px;">
-      <!-- aquí podrías añadir checkboxes / selects -->
-      <label style="font-size:13px;color:var(--muted)">Ordenar:</label>
-      <select id="sortSelect">
-        <option value="featured">Destacados</option>
-        <option value="price-asc">Precio: menor a mayor</option>
-        <option value="price-desc">Precio: mayor a menor</option>
-        <option value="name-asc">Nombre: A→Z</option>
-      </select>
+    <div class="card" data-name="Gorra Oriental" data-price="3300">
+      <img src="https://via.placeholder.com/400x300?text=Oriental+Tumbado" alt="Gorra Oriental">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
+        <div class="price">$3,300.00</div>
+        <button class="add-btn">Agregar al carrito</button>
+      </div>
     </div>
+    <div class="card" data-name="Gorra Money Club" data-price="2800">
+      <img src="https://via.placeholder.com/400x300?text=Money+Club" alt="Gorra Money Club">
+      <div class="meta">
+        <div class="title">GORRA EL BARBAS HATS MONEY CLUB</div>
+        <div class="price">$2,800.00</div>
+        <button class="add-btn">Agregar al carrito</button>
+      </div>
+    </div>
+  </section>
+</main>
 
-    <!-- GRID DE PRODUCTOS -->
-    <section class="grid" id="productsGrid">
-      <!-- Producto 1 -->
-      <article class="card" data-price="3300" data-name="Gorra Barbas Hats x CT 27 CT">
-        <img src="images/hat1.jpg" alt="Gorra Barbas 27 CT">
-        <div class="meta">
-          <div class="title">Gorra Barbas Hats x CT "27 CT"</div>
-          <div class="subtitle">$ 3,300.00</div>
-        </div>
-      </article>
+<!-- Panel de carrito -->
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <span>Carrito</span>
+    <span id="closeCart" style="cursor:pointer;">✕</span>
+  </div>
+  <div class="cart-items" id="cartItems"></div>
+  <div class="cart-footer">
+    <button id="checkoutBtn">Ir a pagar</button>
+  </div>
+</div>
 
-      <!-- Producto 2 -->
-      <article class="card" data-price="18000" data-name="Gorra Barbas Galaxy CT Gold">
-        <img src="images/hat2.jpg" alt="Gorra Galaxy CT">
-        <div class="meta">
-          <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
-          <div class="subtitle">$ 18,000.00</div>
-        </div>
-      </article>
+<!-- Notificación -->
+<div class="toast" id="toast">Producto agregado al carrito</div>
 
-      <!-- Producto 3 -->
-      <article class="card" data-price="3300" data-name="Gorra Barbas Oriental Tumbado">
-        <img src="images/hat3.jpg" alt="Gorra Oriental">
-        <div class="meta">
-          <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
-          <div class="subtitle">$ 3,300.00</div>
-        </div>
-      </article>
+<script>
+const darkToggle = document.getElementById('darkToggle');
+const cartBtn = document.getElementById('cartBtn');
+const cartPanel = document.getElementById('cartPanel');
+const closeCart = document.getElementById('closeCart');
+const toast = document.getElementById('toast');
+const cartItems = document.getElementById('cartItems');
+const addBtns = document.querySelectorAll('.add-btn');
+let cart = [];
 
-      <!-- Producto 4 -->
-      <article class="card" data-price="2800" data-name="Gorra Money Club">
-        <img src="images/hat4.jpg" alt="Gorra Money Club">
-        <div class="meta">
-          <div class="title">GORRA EL BARBAS HATS MONEY CLUB</div>
-          <div class="subtitle">$ 2,800.00</div>
-        </div>
-      </article>
-    </section>
-  </main>
+// modo oscuro
+darkToggle.onclick = () => {
+  document.body.classList.toggle('dark');
+  darkToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+};
 
-  <div class="mobile-bottom"></div>
+// carrito
+cartBtn.onclick = ()=> cartPanel.classList.add('open');
+closeCart.onclick = ()=> cartPanel.classList.remove('open');
 
-  <script>
-    // Código JS mínimo para filtros/orden
-    const filterBtn = document.getElementById('filterBtn');
-    const filterPanel = document.getElementById('filterPanel');
-    const sortSelect = document.getElementById('sortSelect');
-    const grid = document.getElementById('productsGrid');
-    const productCount = document.getElementById('productCount');
+// agregar producto
+addBtns.forEach(btn=>{
+  btn.onclick = e=>{
+    const card = e.target.closest('.card');
+    const name = card.dataset.name;
+    const price = Number(card.dataset.price);
+    cart.push({name, price});
+    renderCart();
+    showToast("Producto agregado al carrito");
+  };
+});
 
-    filterBtn.addEventListener('click', ()=> {
-      filterPanel.style.display = filterPanel.style.display === 'none' ? 'block' : 'none';
-    });
+function renderCart(){
+  cartItems.innerHTML = "";
+  cart.forEach((p,i)=>{
+    const item = document.createElement('div');
+    item.className = 'cart-item';
+    item.innerHTML = `<span>${p.name}</span><span>$${p.price.toLocaleString('es-MX')}</span>`;
+    cartItems.appendChild(item);
+  });
+}
 
-    function formatPrice(n){
-      // simple price formatting (mex)
-      return '$ ' + Number(n).toLocaleString('es-MX', {minimumFractionDigits: 2});
-    }
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(()=> toast.classList.remove('show'), 2000);
+}
 
-    function updateCount(){
-      const total = grid.querySelectorAll('.card').length;
-      productCount.textContent = total + (total === 1 ? ' producto' : ' productos');
-    }
+document.getElementById('checkoutBtn').onclick = ()=> {
+  alert("Ir a pagar (función demo)");
+};
+</script>
 
-    function sortProducts(mode){
-      const cards = Array.from(grid.querySelectorAll('.card'));
-      let sorted;
-      if(mode === 'price-asc'){
-        sorted = cards.sort((a,b)=> Number(a.dataset.price) - Number(b.dataset.price));
-      } else if(mode === 'price-desc'){
-        sorted = cards.sort((a,b)=> Number(b.dataset.price) - Number(a.dataset.price));
-      } else if(mode === 'name-asc'){
-        sorted = cards.sort((a,b)=> a.dataset.name.localeCompare(b.dataset.name));
-      } else {
-        sorted = cards; // featured: keep original order
-      }
-      // re-append in order
-      sorted.forEach(c => grid.appendChild(c));
-    }
-
-    sortSelect.addEventListener('change', (e)=> sortProducts(e.target.value));
-
-    // Iniciar
-    updateCount();
-
-    // Accessible keyboard support (Enter) for filter button
-    filterBtn.addEventListener('keydown', (e)=> {
-      if(e.key === 'Enter') filterBtn.click();
-    });
-  </script>
 </body>
-  
 </html>
