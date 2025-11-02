@@ -35,12 +35,20 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
 .card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
 .card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:200px;object-fit:cover;background:#f2f2f2;}
+.card img{width:100%;height:200px;object-fit:cover;object-position:center;background:#f2f2f2;}
 .card .meta{padding:14px;flex:1;display:flex;flex-direction:column;}
 .card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
 .card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
 .card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
 .card button:hover{opacity:0.9;}
+
+/* Responsive para móvil: una columna y imágenes centradas */
+@media (max-width: 768px) {
+  .grid { grid-template-columns: 1fr; gap: 16px; }
+  .card img { height: 250px; } /* Aumenta altura en móvil para mejor visibilidad */
+  .header-inner { padding: 12px; }
+  .page-title { font-size: 28px; }
+}
 
 /* carrito lateral */
 .cart-panel{
@@ -67,8 +75,13 @@ main{max-width:1200px;margin:auto;padding:20px;}
 #cartBtn img { width: 20px; height: 20px; }
 #searchBtn img { width: 20px; height: 20px; }
 
-/* Menú hamburguesa */
-#menuBtn { cursor: pointer; font-size: 20px; z-index: 30; }
+/* Menú hamburguesa - siempre visible */
+#menuBtn { 
+  cursor: pointer; 
+  font-size: 20px; 
+  z-index: 30; 
+  position: relative; 
+}
 .menu-dropdown {
   position: fixed;
   top: 0;
@@ -94,6 +107,24 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .menu-item:hover { color: var(--accent); }
 .menu-item:last-child { border-bottom: none; }
 body.dark .menu-item { border-bottom-color: #333; }
+
+/* Overlay para cerrar menú al tocar fuera */
+.menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 24;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+}
+.menu-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
 </style>
 </head>
 <body>
@@ -114,6 +145,9 @@ body.dark .menu-item { border-bottom-color: #333; }
   </div>
 </header>
 
+<!-- Overlay para cerrar menú -->
+<div class="menu-overlay" id="menuOverlay"></div>
+
 <!-- Menú desplegable -->
 <div class="menu-dropdown" id="menuDropdown">
   <div class="menu-item" data-category="gorras">Gorras</div>
@@ -130,18 +164,10 @@ body.dark .menu-item { border-bottom-color: #333; }
   <h1 class="page-title">CAPS &gt; BARBAS HATS</h1>
   <div class="controls">
     <button id="filterBtn">Filtrar y ordenar ▾</button>
-    <div id="productCount">5 productos</div>
+    <div id="productCount">3 productos</div>
   </div>
 
   <section class="grid" id="productsGrid">
-    <div class="card" data-name="Gorra 27 CT" data-price="3300">
-      <img src="https://via.placeholder.com/400x300?text=27+CT" alt="Gorra 27 CT">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "27 CT"</div>
-        <div class="price">$3,300.00</div>
-        <button class="add-btn">Agregar al carrito</button>
-      </div>
-    </div>
     <div class="card" data-name="Gorra Galaxy" data-price="18000">
       <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
       <div class="meta">
@@ -163,14 +189,6 @@ body.dark .menu-item { border-bottom-color: #333; }
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
         <div class="price">$3,300.00</div>
-        <button class="add-btn">Agregar al carrito</button>
-      </div>
-    </div>
-    <div class="card" data-name="Gorra Money Club" data-price="2800">
-      <img src="https://via.placeholder.com/400x300?text=Money+Club" alt="Gorra Money Club">
-      <div class="meta">
-        <div class="title">GORRA EL BARBAS HATS MONEY CLUB</div>
-        <div class="price">$2,800.00</div>
         <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
@@ -198,6 +216,7 @@ const cartBtn = document.getElementById('cartBtn');
 const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
+const menuOverlay = document.getElementById('menuOverlay');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
@@ -222,15 +241,35 @@ searchBtn.onclick = () => {
   alert('Función de búsqueda (demo)');
 };
 
-// menú hamburguesa
-menuBtn.onclick = () => menuDropdown.classList.toggle('open');
+// menú hamburguesa - siempre visible, toggle al click
+menuBtn.onclick = (e) => {
+  e.stopPropagation();
+  menuDropdown.classList.toggle('open');
+  menuOverlay.classList.toggle('show');
+};
+
+// Cerrar menú al click en items
 menuItems.forEach(item => {
-  item.onclick = () => {
+  item.onclick = (e) => {
+    e.stopPropagation();
     const category = item.dataset.category;
     alert(`Navegar a categoría: ${category.toUpperCase()}`); // Demo: redirigir a página de categoría
-    menuDropdown.classList.remove('open');
+    closeMenu();
   };
 });
+
+// Cerrar al click fuera (overlay o cualquier parte)
+menuOverlay.onclick = closeMenu;
+document.onclick = (e) => {
+  if (!menuBtn.contains(e.target) && !menuDropdown.contains(e.target)) {
+    closeMenu();
+  }
+};
+
+function closeMenu() {
+  menuDropdown.classList.remove('open');
+  menuOverlay.classList.remove('show');
+}
 
 // agregar producto
 addBtns.forEach(btn=>{
