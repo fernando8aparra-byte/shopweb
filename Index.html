@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ferv - Tienda</title>
+<title>Tienda de Efraín</title>
 <style>
 :root {
   --bg: #ffffff;
@@ -13,13 +13,7 @@
   --accent: #7c4dff;
   --shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
-body.dark {
-  --bg: #121212;
-  --text: #f5f5f5;
-  --muted: #aaa;
-  --card-bg: #1e1e1e;
-  --shadow: 0 8px 20px rgba(255,255,255,0.05);
-}
+
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
 body{background:var(--bg);color:var(--text);transition:.3s background,.3s color;}
 header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
@@ -72,10 +66,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
 }
 .toast.show{opacity:1;bottom:60px;}
 
-/* modo oscuro toggle */
-#darkToggle{font-size:18px;cursor:pointer;width: 18px; height: 18px;}
-#cartBtn img, #searchBtn img { width: 20px; height: 20px; }
-
 /* búsqueda */
 .search-bar {
   display:none;
@@ -93,10 +83,10 @@ main{max-width:1200px;margin:auto;padding:20px;}
 }
 
 /* Menú hamburguesa */
-#menuBtn { cursor:pointer;font-size:20px;z-index:30;position:relative; }
+#menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
 .menu-dropdown {
   position: fixed;
-  top: 0; left: -250px;
+  top: 0; left: -270px;
   width: 250px; height: 100%;
   background: var(--card-bg);
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);
@@ -107,14 +97,17 @@ main{max-width:1200px;margin:auto;padding:20px;}
 }
 .menu-dropdown.open { left: 0; }
 .menu-item {
-  padding: 12px 0; border-bottom: 1px solid #eee;
-  cursor: pointer; font-size: 16px; color: var(--text);
+  padding: 14px 0;
+  border-bottom: 2px solid #e1e1e1;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
 }
 .menu-item:hover { color: var(--accent); }
-body.dark .menu-item { border-bottom-color: #333; }
 .menu-overlay {
   position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-  background: transparent;z-index: 24;
+  background: rgba(0,0,0,0.2);z-index: 24;
   opacity: 0;visibility: hidden;transition: opacity 0.3s ease;
 }
 .menu-overlay.show {opacity: 1;visibility: visible;}
@@ -125,14 +118,13 @@ body.dark .menu-item { border-bottom-color: #333; }
 <header>
   <div class="header-inner">
     <div id="menuBtn" title="Menú">☰</div>
-    <div class="logo">Ferv</div>
+    <div class="logo">Tienda de Efraín</div>
     <div class="header-actions">
-      <img id="darkToggle" src="https://cdn-icons-png.flaticon.com/512/6714/6714978.png" alt="Modo oscuro" title="Modo oscuro">
       <div id="searchBtn" class="icon" title="Buscar">
-        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar">
+        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar" width="22">
       </div>
       <div id="cartBtn" class="icon" title="Carrito">
-        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito">
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" width="22">
       </div>
     </div>
   </div>
@@ -152,10 +144,10 @@ body.dark .menu-item { border-bottom-color: #333; }
 
 <main>
   <div class="breadcrumbs">INICIO &gt; PRODUCTOS</div>
-  <h1 class="page-title">Productos Ferv</h1>
+  <h1 class="page-title">Productos disponibles</h1>
 
   <div class="search-bar" id="searchBar">
-    <input type="text" id="searchInput" placeholder="Buscar producto...">
+    <input type="text" id="searchInput" placeholder="Buscar producto (ej. 'CT', 'gorras', etc.)">
   </div>
 
   <div class="controls">
@@ -164,7 +156,7 @@ body.dark .menu-item { border-bottom-color: #333; }
   </div>
 
   <section class="grid" id="productsGrid">
-    <div class="card" data-name="Gorra Galaxy" data-price="18000">
+    <div class="card" data-name="Gorra Galaxy CT" data-price="18000">
       <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
@@ -172,7 +164,7 @@ body.dark .menu-item { border-bottom-color: #333; }
         <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
-    <div class="card" data-name="Gorra Star" data-price="4500">
+    <div class="card" data-name="Gorra Star CT" data-price="4500">
       <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
@@ -180,7 +172,7 @@ body.dark .menu-item { border-bottom-color: #333; }
         <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
-    <div class="card" data-name="Gorra Oriental" data-price="3300">
+    <div class="card" data-name="Gorra Oriental Tumbado" data-price="3300">
       <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
@@ -208,7 +200,6 @@ body.dark .menu-item { border-bottom-color: #333; }
 <div class="toast" id="toast">Producto agregado al carrito</div>
 
 <script>
-const darkToggle = document.getElementById('darkToggle');
 const cartBtn = document.getElementById('cartBtn');
 const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
@@ -222,9 +213,6 @@ const addBtns = document.querySelectorAll('.add-btn');
 const searchBar = document.getElementById('searchBar');
 const searchInput = document.getElementById('searchInput');
 let cart = [];
-
-// modo oscuro
-darkToggle.onclick = () => document.body.classList.toggle('dark');
 
 // carrito
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
@@ -240,13 +228,13 @@ menuOverlay.onclick = () => {
   menuOverlay.classList.remove('show');
 };
 
-// búsqueda
+// búsqueda avanzada (ignora mayúsculas, minúsculas y busca dentro del texto)
 searchBtn.onclick = () => {
   searchBar.style.display = searchBar.style.display === 'block' ? 'none' : 'block';
   searchInput.focus();
 };
 searchInput.addEventListener('input', e => {
-  const term = e.target.value.toLowerCase();
+  const term = e.target.value.trim().toLowerCase();
   document.querySelectorAll('.card').forEach(card => {
     const name = card.dataset.name.toLowerCase();
     card.style.display = name.includes(term) ? 'flex' : 'none';
@@ -291,8 +279,15 @@ function showToast(msg){
   setTimeout(()=> toast.classList.remove('show'), 2000);
 }
 
+// pago simulado
 document.getElementById('checkoutBtn').onclick = ()=> {
-  alert("Redirigiendo a pago (demo)");
+  const opciones = `
+Seleccione un método de pago:
+1️⃣ PayPal
+2️⃣ Tarjeta de crédito o débito
+(Próximamente integración real)
+  `;
+  alert(opciones);
 };
 </script>
 </body>
