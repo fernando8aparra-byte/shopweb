@@ -19,13 +19,13 @@ header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;to
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
 .logo{font-size:24px;font-weight:900;letter-spacing:1px;}
 .header-actions{display:flex;align-items:center;gap:14px;}
-.icon{cursor:pointer;font-size:20px;}
+.icon{cursor:pointer;font-size:20px;position:relative;}
 main{max-width:1200px;margin:auto;padding:20px;}
 .page-title{font-size:38px;margin:6px 0 14px;font-weight:800;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
 .card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;cursor:pointer;}
 .card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:200px;object-fit:cover;object-position:center;background:#f2f2f2;}
+.card img{width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;background:#f9f9f9;}
 .card .meta{padding:14px;flex:1;display:flex;flex-direction:column;}
 .card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
 .card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
@@ -47,16 +47,22 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .paypal img{height:18px;}
 .cardpay{background:#0070ba;color:#fff;}
 .cardpay img{height:20px;filter:invert(1);}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;}
-.toast.show{opacity:1;bottom:60px;}
-.search-bar {display:none;margin-bottom: 20px;text-align:center;}
-.search-bar input {width: 90%;padding: 10px;border-radius: 8px;border: 1px solid #ccc;background: var(--card-bg);color: var(--text);font-size: 15px;}
+.toast{position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 22px;border-radius:10px;opacity:0;transition:all .4s ease;z-index:200;font-weight:600;font-size:16px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.toast.show{bottom:60px;opacity:1;transform:translateX(-50%) scale(1.05);}
+@keyframes shake {
+  0%,100% { transform: rotate(0deg); }
+  20% { transform: rotate(-15deg); }
+  40% { transform: rotate(15deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(10deg); }
+}
+.shake { animation: shake 0.4s ease; }
 #menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
 .menu-dropdown {position: fixed;top: 0; left: -270px;width: 250px; height: 100%;background: var(--card-bg);
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);transition: left 0.3s ease;z-index: 25;padding: 60px 20px 20px;
-  display: flex; flex-direction: column;position:fixed;}
+  display: flex; flex-direction: column;}
 .menu-dropdown.open { left: 0; }
-.menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;}
+.menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;text-align:center;}
 .menu-item:hover { color: var(--accent); }
 .menu-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.2);z-index: 24;
   opacity: 0;visibility: hidden;transition: opacity 0.3s ease;}
@@ -83,9 +89,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
     <div id="menuBtn" title="Menú">☰</div>
     <div class="logo">Boutique Buendía</div>
     <div class="header-actions">
-      <div id="searchBtn" class="icon" title="Buscar">
-        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar" width="22">
-      </div>
       <div id="cartBtn" class="icon" title="Carrito">
         <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" width="22">
       </div>
@@ -125,6 +128,14 @@ main{max-width:1200px;margin:auto;padding:20px;}
         <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
       </div>
     </div>
+    <div class="card" data-name="Gorra Oriental Tumbado" data-price="3300" onclick="window.location='producto3.html'">
+      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
+        <div class="price">$3,300.00</div>
+        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -156,7 +167,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
 
 <script>
 const cartBtn = document.getElementById('cartBtn');
-const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 const menuOverlay = document.getElementById('menuOverlay');
@@ -166,7 +176,6 @@ const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
 const addBtns = document.querySelectorAll('.add-btn');
-const cartFooter = document.getElementById('cartFooter');
 let cart = [];
 
 menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
@@ -185,7 +194,8 @@ addBtns.forEach(btn=>{
     const price = Number(card.dataset.price);
     cart.push({name, price});
     renderCart();
-    showToast("Producto agregado al carrito");
+    animateCart();
+    showToast("Producto agregado con éxito 🛒");
   };
 });
 
@@ -211,10 +221,16 @@ function renderCart(){
 
 function removeItem(i){ cart.splice(i,1); renderCart(); }
 
+function animateCart(){
+  const img = cartBtn.querySelector('img');
+  img.classList.add('shake');
+  setTimeout(()=> img.classList.remove('shake'), 500);
+}
+
 function showToast(msg){
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(()=> toast.classList.remove('show'), 2000);
+  setTimeout(()=> toast.classList.remove('show'), 2500);
 }
 
 // Mostrar "Próximamente"
