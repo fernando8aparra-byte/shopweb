@@ -48,10 +48,8 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
 .card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
 .card button:hover{opacity:0.9;}
-.back-btn{display:inline-block;margin-top:40px;text-decoration:none;background:#eee;padding:10px 16px;border-radius:8px;color:var(--text);font-weight:600;}
-.back-btn:hover{background:#ddd;}
-.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;}
-.toast.show{opacity:1;bottom:60px;}
+
+/* carrito lateral */
 .cart-panel{position:fixed;top:0;right:-400px;width:340px;height:100%;background:var(--card-bg);
   box-shadow:-4px 0 20px rgba(0,0,0,0.2);transition:right .3s ease;display:flex;flex-direction:column;z-index:100;}
 .cart-panel.open{right:0;}
@@ -61,12 +59,45 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
 .cart-footer{border-top:1px solid #ccc;padding:16px;}
 .cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
+
+/* menú hamburguesa */
+#menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
+.menu-dropdown {
+  position: fixed;
+  top: 0; left: -270px;
+  width: 250px; height: 100%;
+  background: var(--card-bg);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 25;
+  padding: 60px 20px 20px;
+  display: flex; flex-direction: column;
+}
+.menu-dropdown.open { left: 0; }
+.menu-item {
+  padding: 14px 0;
+  border-bottom: 2px solid #e1e1e1;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text);
+  font-weight: 600;
+}
+.menu-item:hover { color: var(--accent); }
+.menu-overlay {
+  position: fixed;top: 0;left: 0;width: 100%;height: 100%;
+  background: rgba(0,0,0,0.2);z-index: 24;
+  opacity: 0;visibility: hidden;transition: opacity 0.3s ease;
+}
+.menu-overlay.show {opacity: 1;visibility: visible;}
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;}
+.toast.show{opacity:1;bottom:60px;}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
+    <div id="menuBtn" title="Menú">☰</div>
     <div class="logo">Tienda de Efraín</div>
     <div class="header-actions">
       <div id="cartBtn" class="icon" title="Carrito">
@@ -76,8 +107,20 @@ main{max-width:1200px;margin:auto;padding:20px;}
   </div>
 </header>
 
+<!-- Menú lateral -->
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="menu-dropdown" id="menuDropdown">
+  <div class="menu-item">Gorras</div>
+  <div class="menu-item">Camisetas</div>
+  <div class="menu-item">Sudaderas</div>
+  <div class="menu-item">Tenis</div>
+  <div class="menu-item">Fragancias</div>
+  <div class="menu-item">Relojes</div>
+  <div class="menu-item">Cintos</div>
+</div>
+
 <main>
-  <div class="breadcrumbs"><a href="index.html" style="color:var(--muted);text-decoration:none;">INICIO</a> &gt; PRODUCTO</div>
+  <div class="breadcrumbs">PRODUCTO</div>
 
   <div class="product-detail">
     <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy CT">
@@ -126,8 +169,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
       </div>
     </div>
   </section>
-
-  <a href="index.html" class="back-btn">⬅ Volver al inicio</a>
 </main>
 
 <!-- Carrito -->
@@ -145,6 +186,9 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <div class="toast" id="toast">Producto agregado al carrito</div>
 
 <script>
+const menuBtn = document.getElementById('menuBtn');
+const menuDropdown = document.getElementById('menuDropdown');
+const menuOverlay = document.getElementById('menuOverlay');
 const cartBtn = document.getElementById('cartBtn');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
@@ -152,6 +196,17 @@ const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
 let cart = [];
 
+// Menú
+menuBtn.onclick = () => {
+  menuDropdown.classList.toggle('open');
+  menuOverlay.classList.toggle('show');
+};
+menuOverlay.onclick = () => {
+  menuDropdown.classList.remove('open');
+  menuOverlay.classList.remove('show');
+};
+
+// Carrito
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
 closeCart.onclick = ()=> cartPanel.classList.remove('open');
 
@@ -160,6 +215,7 @@ document.getElementById('addToCart').onclick = ()=>{
   renderCart();
   showToast("Producto agregado al carrito");
 };
+
 function renderCart(){
   cartItems.innerHTML = "";
   let total = 0;
