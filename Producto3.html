@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gorra Barbas Hats x CT "ORIENTAL TUMBADO" - Boutique Buendía</title>
+<style>
+:root {
+  --bg: #fff;
+  --text: #111;
+  --muted: #777;
+  --card-bg: #fff;
+  --accent: #7c4dff;
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);}
+header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+.logo{font-size:24px;font-weight:900;letter-spacing:1px;}
+.header-actions{display:flex;align-items:center;gap:14px;}
+.icon{cursor:pointer;font-size:20px;position:relative;}
+main{max-width:1200px;margin:auto;padding:20px;}
+.product-main{display:flex;flex-wrap:wrap;gap:30px;align-items:center;justify-content:center;margin-bottom:60px;}
+.product-img{flex:1;min-width:320px;max-width:480px;}
+.product-img img{width:100%;border-radius:12px;box-shadow:var(--shadow);object-fit:contain;background:#f9f9f9;}
+.product-info{flex:1;min-width:300px;}
+.product-info h1{font-size:30px;font-weight:800;margin-bottom:10px;}
+.product-info p{color:var(--muted);margin-bottom:20px;font-size:15px;line-height:1.5;}
+.product-info .price{font-size:26px;font-weight:800;margin-bottom:18px;}
+.qty{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.qty input{width:60px;padding:6px;text-align:center;border-radius:8px;border:1px solid #ccc;}
+.add-btn{background:var(--accent);color:#fff;border:none;padding:12px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;}
+.add-btn:hover{opacity:0.9;}
+.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:20px;max-width:280px;}
+.pay-btn{display:flex;align-items:center;justify-content:center;gap:8px;border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:15px;cursor:pointer;}
+.paypal{background:#ffc439;color:#111;}
+.paypal img{height:18px;}
+.cardpay{background:#0070ba;color:#fff;}
+.cardpay img{height:20px;filter:invert(1);}
+.related{margin-top:60px;}
+.related h2{font-size:24px;font-weight:800;margin-bottom:20px;text-align:center;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
+.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s;}
+.card:hover{transform:translateY(-4px);}
+.card img{width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;background:#f9f9f9;}
+.card .meta{padding:14px;}
+.card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
+.card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
+.card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
+.cart-panel{position:fixed;top:0;right:-400px;width:340px;height:100%;background:var(--card-bg);box-shadow:-4px 0 20px rgba(0,0,0,0.2);
+  transition:right .3s ease;display:flex;flex-direction:column;z-index:100;}
+.cart-panel.open{right:0;}
+.cart-header{padding:16px;font-size:20px;font-weight:700;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;align-items:center;}
+.cart-items{flex:1;overflow-y:auto;padding:14px;}
+.cart-empty{text-align:center;color:var(--muted);font-size:15px;padding:50px 0;}
+.cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;}
+.cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
+.cart-footer{border-top:1px solid #ccc;padding:16px;}
+.cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
+.toast{position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 22px;border-radius:10px;
+opacity:0;transition:all .4s ease;z-index:200;font-weight:600;font-size:16px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
+.toast.show{bottom:60px;opacity:1;transform:translateX(-50%) scale(1.05);}
+@keyframes shake {
+  0%,100% { transform: rotate(0deg); }
+  20% { transform: rotate(-15deg); }
+  40% { transform: rotate(15deg); }
+  60% { transform: rotate(-10deg); }
+  80% { transform: rotate(10deg); }
+}
+.shake { animation: shake 0.4s ease; }
+#menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
+.menu-dropdown {position: fixed;top: 0; left: -270px;width: 250px; height: 100%;background: var(--card-bg);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);transition: left 0.3s ease;z-index: 25;padding: 60px 20px 20px;
+  display: flex; flex-direction: column;}
+.menu-dropdown.open { left: 0; }
+.menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;text-align:center;}
+.menu-item:hover { color: var(--accent); }
+.menu-close{position:absolute;top:12px;right:16px;font-size:22px;cursor:pointer;color:var(--text);}
+.menu-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.2);z-index: 24;
+opacity: 0;visibility: hidden;transition: opacity 0.3s ease;}
+.menu-overlay.show {opacity: 1;visibility: visible;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div id="menuBtn">☰</div>
+    <div class="logo">Boutique Buendía</div>
+    <div class="header-actions">
+      <div id="cartBtn" class="icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" width="22">
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+<div class="menu-dropdown" id="menuDropdown">
+  <span class="menu-close" id="menuClose">✕</span>
+  <div class="menu-item" onclick="window.location='index.html'">Inicio</div>
+  <div class="menu-item">Camisetas</div>
+  <div class="menu-item">Sudaderas</div>
+  <div class="menu-item">Tenis</div>
+  <div class="menu-item">Fragancias</div>
+  <div class="menu-item">Relojes</div>
+  <div class="menu-item">Cintos</div>
+</div>
+
+<main>
+  <section class="product-main">
+    <div class="product-img">
+      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental Tumbado">
+    </div>
+    <div class="product-info">
+      <h1>Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</h1>
+      <p>Diseño inspirado en la cultura oriental con detalles bordados de alta calidad. Hecha a mano, combina elegancia y autenticidad con el estilo Tumbado.</p>
+      <div class="price">$3,300.00 MXN</div>
+      <div class="qty">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" id="cantidad" value="1" min="1">
+      </div>
+      <button class="add-btn" id="addCartBtn">Agregar al carrito</button>
+      <div class="payment-options">
+        <button class="pay-btn paypal">
+          <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png">
+          Pagar con PayPal
+        </button>
+        <button class="pay-btn cardpay">
+          <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png">
+          Pagar con Tarjeta
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="related">
+    <h2>Productos que podrían interesarte</h2>
+    <div class="grid">
+      <div class="card" onclick="window.location='producto1.html'">
+        <img src="http://imgfz.com/i/TBumyjZ.webp">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "GALAXY CT"</div>
+          <div class="price">$18,000.00</div>
+        </div>
+      </div>
+      <div class="card" onclick="window.location='producto2.html'">
+        <img src="http://imgfz.com/i/rTJ1Xnl.webp">
+        <div class="meta">
+          <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
+          <div class="price">$4,500.00</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="cart-panel" id="cartPanel">
+  <div class="cart-header">
+    <span>Carrito</span>
+    <span id="closeCart" style="cursor:pointer;">✕</span>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">Tu carrito está vacío 🛍️</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total" id="cartTotal">Total: $0</div>
+    <div class="payment-options">
+      <button class="pay-btn paypal">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png">
+        Pagar con PayPal
+      </button>
+      <button class="pay-btn cardpay">
+        <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png">
+        Pagar con Tarjeta
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Producto agregado con éxito 🛒</div>
+
+<script>
+const cartBtn=document.getElementById('cartBtn');
+const cartPanel=document.getElementById('cartPanel');
+const closeCart=document.getElementById('closeCart');
+const toast=document.getElementById('toast');
+const addCartBtn=document.getElementById('addCartBtn');
+const cartItems=document.getElementById('cartItems');
+let cart=[];
+
+cartBtn.onclick=()=>cartPanel.classList.add('open');
+closeCart.onclick=()=>cartPanel.classList.remove('open');
+
+addCartBtn.onclick=()=>{
+  const cantidad=parseInt(document.getElementById('cantidad').value);
+  for(let i=0;i<cantidad;i++){ cart.push({name:"Gorra Oriental Tumbado",price:3300}); }
+  renderCart();
+  animateCart();
+  showToast("Producto agregado con éxito 🛒");
+};
+
+function renderCart(){
+  cartItems.innerHTML="";
+  if(cart.length===0){
+    cartItems.innerHTML='<div class="cart-empty">Tu carrito está vacío 🛍️</div>';
+    document.getElementById('cartTotal').textContent="Total: $0";
+    return;
+  }
+  let total=0;
+  cart.forEach((p,i)=>{
+    const item=document.createElement('div');
+    item.className='cart-item';
+    item.innerHTML=`<span>${p.name}</span><span>$${p.price.toLocaleString('es-MX')}</span><button onclick="removeItem(${i})">✕</button>`;
+    cartItems.appendChild(item);
+    total+=p.price;
+  });
+  document.getElementById('cartTotal').textContent="Total: $"+total.toLocaleString('es-MX');
+}
+function removeItem(i){ cart.splice(i,1); renderCart(); }
+
+function animateCart(){
+  const img=cartBtn.querySelector('img');
+  img.classList.add('shake');
+  setTimeout(()=>img.classList.remove('shake'),500);
+}
+function showToast(msg){
+  toast.textContent=msg;
+  toast.classList.add('show');
+  setTimeout(()=>toast.classList.remove('show'),2500);
+}
+
+// menú
+const menuBtn=document.getElementById('menuBtn');
+const menuDropdown=document.getElementById('menuDropdown');
+const menuOverlay=document.getElementById('menuOverlay');
+const menuClose=document.getElementById('menuClose');
+menuBtn.onclick=()=>{menuDropdown.classList.add('open');menuOverlay.classList.add('show');};
+menuOverlay.onclick=closeMenu;
+menuClose.onclick=closeMenu;
+function closeMenu(){menuDropdown.classList.remove('open');menuOverlay.classList.remove('show');}
+</script>
+</body>
+</html>
