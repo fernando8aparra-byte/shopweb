@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Producto - Tienda de Efraín</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" style="text-decoration:none;color:inherit;">⬅ Volver</a>
+    <div class="logo">Tienda de Efraín</div>
+    <div class="header-actions">
+      <div id="cartBtn" class="icon">🛒</div>
+    </div>
+  </div>
+</header>
+
+<main id="productDetail" class="product-detail">
+  <!-- Se llena con JS -->
+</main>
+
+<section class="related">
+  <h2>También te podría interesar</h2>
+  <div class="grid" id="relatedGrid">
+    <!-- Productos sugeridos -->
+  </div>
+</section>
+
+<div class="toast" id="toast">Producto agregado al carrito</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+// Cargar producto desde localStorage
+const cont = document.getElementById('productDetail');
+const data = JSON.parse(localStorage.getItem('productoSeleccionado') || '{}');
+
+if(!data.name){
+  cont.innerHTML = "<p>No se encontró el producto.</p>";
+} else {
+  cont.innerHTML = `
+    <div class="product-hero">
+      <img src="${data.img}" alt="${data.name}">
+      <div class="product-info">
+        <h1>${data.name}</h1>
+        <p class="price">$${Number(data.price).toLocaleString('es-MX')}</p>
+        <p class="desc">Gorra de alta calidad edición limitada, bordado premium y materiales resistentes.</p>
+        <label>Cantidad:</label>
+        <input type="number" id="cantidad" value="1" min="1" max="10">
+        <button id="addToCart">Agregar al carrito</button>
+
+        <div class="payment-options">
+          <button class="pay-btn paypal">
+            <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
+            Pagar con PayPal
+          </button>
+          <button class="pay-btn cardpay">
+            <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Tarjeta">
+            Pagar con Tarjeta
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Productos relacionados
+const sugeridos = [
+  { name:"Gorra Star CT", img:"http://imgfz.com/i/rTJ1Xnl.webp", price:4500 },
+  { name:"Gorra Oriental Tumbado", img:"http://imgfz.com/i/P9gF7m8.webp", price:3300 },
+  { name:"Gorra Galaxy CT", img:"http://imgfz.com/i/TBumyjZ.webp", price:18000 }
+];
+
+const relatedGrid = document.getElementById('relatedGrid');
+sugeridos.forEach(p=>{
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.innerHTML = `
+    <img src="${p.img}">
+    <div class="meta">
+      <div class="title">${p.name}</div>
+      <div class="price">$${p.price.toLocaleString('es-MX')}</div>
+      <button>Ver producto</button>
+    </div>`;
+  relatedGrid.appendChild(el);
+});
+</script>
+</body>
+</html>
