@@ -1,227 +1,293 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gorra Galaxy CT - Tienda de Efraín</title>
-<style>
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #777;
-  --card-bg: #fff;
-  --accent: #7c4dff;
-  --shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
-body{background:var(--bg);color:var(--text);}
-header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
-.logo{font-size:24px;font-weight:900;letter-spacing:1px;}
-#menuBtn {cursor:pointer;font-size:26px;}
-main{max-width:1200px;margin:auto;padding:20px;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gorra Negra - Boutique Buendía</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to bottom, #fff, #f2f2f2);
+      color: #222;
+    }
 
-.product-container{
-  display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start;
-}
-.product-images{
-  flex:1 1 45%;
-}
-.product-images img{
-  width:100%;
-  border-radius:12px;
-  object-fit:cover;
-  max-height:480px;
-  box-shadow:var(--shadow);
-}
-.product-details{
-  flex:1 1 45%;
-}
-.product-title{
-  font-size:28px;font-weight:800;margin-bottom:8px;
-}
-.product-price{
-  font-size:22px;font-weight:700;margin-bottom:14px;
-  color:var(--accent);
-}
-.product-desc{
-  font-size:15px;line-height:1.6;margin-bottom:22px;color:var(--muted);
-}
-.payment-section{
-  display:flex;flex-direction:column;gap:12px;
-}
-.btn-outline{
-  border:2px solid #000;
-  background:none;
-  padding:12px;
-  border-radius:8px;
-  font-size:16px;
-  font-weight:600;
-  cursor:pointer;
-  transition:all .2s;
-}
-.btn-outline:hover{
-  background:#000;color:#fff;
-}
-.btn-paypal{
-  background:#ffc439;
-  border:none;
-  border-radius:8px;
-  padding:12px;
-  font-size:17px;
-  font-weight:700;
-  cursor:pointer;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  gap:6px;
-}
-.btn-paypal img{
-  height:18px;
-}
-.more-options{
-  text-align:center;
-  margin-top:10px;
-  font-size:15px;
-  text-decoration:underline;
-  cursor:pointer;
-  font-weight:500;
-  color:var(--text);
-}
+    header {
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-/* Recomendaciones */
-.related-products{
-  margin-top:50px;
-}
-.related-title{
-  font-size:22px;font-weight:700;margin-bottom:20px;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-  gap:22px;
-}
-.card{
-  background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);
-  overflow:hidden;transition:transform .2s;display:flex;flex-direction:column;
-}
-.card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:240px;object-fit:cover;}
-.card .meta{padding:14px;}
-.card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
-.card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
+    header h1 {
+      font-size: 1.3em;
+      color: #111;
+    }
 
-/* menú lateral */
-.menu-overlay {
-  position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-  background: rgba(0,0,0,0.2);z-index: 24;
-  opacity: 0;visibility: hidden;transition: opacity 0.3s ease;
-}
-.menu-overlay.show {opacity: 1;visibility: visible;}
-.menu-dropdown {
-  position: fixed;
-  top: 0; left: -270px;
-  width: 250px; height: 100%;
-  background: var(--card-bg);
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  transition: left 0.3s ease;
-  z-index: 25;
-  padding: 60px 20px 20px;
-  display: flex; flex-direction: column;
-}
-.menu-dropdown.open { left: 0; }
-.menu-item {
-  padding: 14px 0;
-  border-bottom: 2px solid #e1e1e1;
-  cursor: pointer;
-  font-size: 16px;
-  color: var(--text);
-  font-weight: 600;
-}
-.menu-item:hover { color: var(--accent); }
-</style>
+    .menu-icon {
+      font-size: 26px;
+      cursor: pointer;
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 250px;
+      height: 100%;
+      background: #fff;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      z-index: 20;
+      padding: 20px;
+    }
+
+    .menu.active {
+      left: 0;
+    }
+
+    .close-menu {
+      font-size: 20px;
+      float: right;
+      cursor: pointer;
+    }
+
+    .menu h2 {
+      margin-top: 40px;
+      margin-bottom: 20px;
+      font-size: 1.2em;
+    }
+
+    .menu a {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      padding: 10px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .menu a.disabled {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .product-container {
+      max-width: 1100px;
+      margin: 30px auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .product-main {
+      flex: 1 1 350px;
+      text-align: center;
+    }
+
+    .product-main img {
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .product-details {
+      flex: 1 1 300px;
+    }
+
+    .product-details h2 {
+      font-size: 1.6em;
+      margin-bottom: 10px;
+    }
+
+    .product-details p {
+      line-height: 1.5;
+    }
+
+    .price {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin: 15px 0;
+    }
+
+    .payment-options {
+      margin-top: 20px;
+    }
+
+    .payment-options button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1em;
+      border: none;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .payment-options button:hover {
+      transform: scale(1.03);
+    }
+
+    .add-to-cart {
+      background-color: #fff;
+      border: 1px solid #111;
+    }
+
+    .paypal {
+      background-color: #ffc439;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-weight: bold;
+    }
+
+    .paypal img {
+      height: 18px;
+    }
+
+    .more-options {
+      background: none;
+      color: #0070ba;
+      text-decoration: underline;
+    }
+
+    .related-products {
+      text-align: center;
+      margin: 50px auto;
+      max-width: 1100px;
+    }
+
+    .related-products h3 {
+      margin-bottom: 20px;
+      font-size: 1.4em;
+    }
+
+    .related-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+    }
+
+    .related-item {
+      background: #fff;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .related-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .success-message {
+      display: none;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      animation: fadeInOut 2s ease;
+      z-index: 50;
+    }
+
+    @keyframes fadeInOut {
+      0% {opacity: 0;}
+      10% {opacity: 1;}
+      90% {opacity: 1;}
+      100% {opacity: 0;}
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Boutique Buendía</h1>
+    <span class="menu-icon" onclick="toggleMenu()">☰</span>
+  </header>
 
-<header>
-  <div class="header-inner">
-    <div id="menuBtn">☰</div>
-    <div class="logo">Tienda de Efraín</div>
-    <div style="width:26px;"></div>
+  <div class="menu" id="menu">
+    <span class="close-menu" onclick="toggleMenu()">✕</span>
+    <h2>Categorías</h2>
+    <a href="index.html">Gorras</a>
+    <a class="disabled">Próximamente</a>
+    <a class="disabled">Próximamente</a>
+    <a class="disabled">Próximamente</a>
   </div>
-</header>
 
-<!-- Menú -->
-<div class="menu-overlay" id="menuOverlay"></div>
-<div class="menu-dropdown" id="menuDropdown">
-  <div class="menu-item">Gorras</div>
-  <div class="menu-item">Camisetas</div>
-  <div class="menu-item">Sudaderas</div>
-  <div class="menu-item">Tenis</div>
-  <div class="menu-item">Fragancias</div>
-  <div class="menu-item">Relojes</div>
-  <div class="menu-item">Cintos</div>
-</div>
+  <div class="success-message" id="successMessage">¡Producto agregado al carrito!</div>
 
-<main>
-  <section class="product-container">
-    <div class="product-images">
-      <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy CT">
+  <div class="product-container">
+    <div class="product-main">
+      <img src="https://i.imgur.com/CkFfM3F.png" alt="Gorra Negra">
     </div>
-
     <div class="product-details">
-      <h1 class="product-title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</h1>
-      <div class="product-price">$18,000.00</div>
-      <p class="product-desc">
-        Gorra edición limitada "GALAXY CT" con acabado Gold 24K Plated.  
-        Diseño exclusivo de Barbas Hats x CT, materiales de primera calidad y detalles únicos.
-      </p>
-
-      <div class="payment-section">
-        <button class="btn-outline">Agregar al carrito</button>
-        <button class="btn-paypal">
-          <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
-          Pagar con PayPal
-        </button>
-        <div class="more-options">Más opciones de pago</div>
+      <h2>Gorra Negra Clásica</h2>
+      <p>Una gorra versátil de estilo moderno, ideal para cualquier ocasión. Fabricada con materiales de alta calidad para máxima comodidad y durabilidad.</p>
+      <div class="price">$499 MXN</div>
+      <div class="payment-options">
+        <button class="add-to-cart" onclick="addToCart()">Agregar al carrito</button>
+        <button class="paypal"><img src="https://www.paypalobjects.com/webstatic/icon/pp258.png" alt="PayPal">Pagar con PayPal</button>
+        <button class="more-options">Más opciones de pago</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="related-products">
-    <h2 class="related-title">También te podría interesar</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
-        <div class="meta">
-          <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
-          <div class="price">$4,500.00</div>
-        </div>
+  <div class="related-products">
+    <h3>También podría interesarte</h3>
+    <div class="related-grid">
+      <div class="related-item">
+        <img src="https://i.imgur.com/f2uZbXy.png" alt="Gorra Azul">
+        <p>Gorra Azul Marino</p>
       </div>
-      <div class="card">
-        <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
-        <div class="meta">
-          <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
-          <div class="price">$3,300.00</div>
-        </div>
+      <div class="related-item">
+        <img src="https://i.imgur.com/W4xq8aP.png" alt="Gorra Blanca">
+        <p>Gorra Blanca Clásica</p>
       </div>
     </div>
-  </section>
-</main>
+  </div>
 
-<script>
-const menuBtn = document.getElementById('menuBtn');
-const menuDropdown = document.getElementById('menuDropdown');
-const menuOverlay = document.getElementById('menuOverlay');
+  <script>
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('active');
+    }
 
-menuBtn.onclick = () => {
-  menuDropdown.classList.toggle('open');
-  menuOverlay.classList.toggle('show');
-};
-menuOverlay.onclick = () => {
-  menuDropdown.classList.remove('open');
-  menuOverlay.classList.remove('show');
-};
-</script>
+    function addToCart() {
+      const success = document.getElementById('successMessage');
+      success.style.display = 'block';
+      setTimeout(() => {
+        success.style.display = 'none';
+      }, 2000);
+
+      const cart = document.querySelector('.menu-icon');
+      cart.style.animation = 'shake 0.4s';
+      setTimeout(() => cart.style.animation = '', 400);
+    }
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: rotate(0deg); }
+        25% { transform: rotate(-10deg); }
+        75% { transform: rotate(10deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
 </body>
 </html>
