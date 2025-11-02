@@ -15,7 +15,7 @@
 }
 
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
-body{background:var(--bg);color:var(--text);transition:.3s background,.3s color;}
+body{background:var(--bg);color:var(--text);}
 header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
 .logo{font-size:24px;font-weight:900;letter-spacing:1px;}
@@ -56,8 +56,17 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
 .cart-footer{border-top:1px solid #ccc;padding:16px;}
 .cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
-.cart-footer button{width:100%;background:var(--accent);color:#fff;border:none;padding:12px;font-weight:700;border-radius:8px;cursor:pointer;}
-.cart-footer button:hover{opacity:0.9;}
+
+/* Botones de pago */
+.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
+.pay-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:15px;cursor:pointer;
+}
+.paypal{background:#ffc439;color:#111;}
+.paypal img{height:18px;}
+.cardpay{background:#0070ba;color:#fff;}
+.cardpay img{height:20px;filter:invert(1);}
 
 /* notificación */
 .toast{
@@ -192,7 +201,16 @@ main{max-width:1200px;margin:auto;padding:20px;}
   <div class="cart-items" id="cartItems"></div>
   <div class="cart-footer">
     <div class="cart-total" id="cartTotal">Total: $0</div>
-    <button id="checkoutBtn">Ir a pagar</button>
+    <div class="payment-options">
+      <button class="pay-btn paypal" id="paypalBtn">
+        <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
+        Pagar con PayPal
+      </button>
+      <button class="pay-btn cardpay" id="cardBtn">
+        <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Tarjeta">
+        Pagar con Tarjeta
+      </button>
+    </div>
   </div>
 </div>
 
@@ -228,7 +246,7 @@ menuOverlay.onclick = () => {
   menuOverlay.classList.remove('show');
 };
 
-// búsqueda avanzada (ignora mayúsculas, minúsculas y busca dentro del texto)
+// búsqueda avanzada
 searchBtn.onclick = () => {
   searchBar.style.display = searchBar.style.display === 'block' ? 'none' : 'block';
   searchInput.focus();
@@ -279,15 +297,12 @@ function showToast(msg){
   setTimeout(()=> toast.classList.remove('show'), 2000);
 }
 
-// pago simulado
-document.getElementById('checkoutBtn').onclick = ()=> {
-  const opciones = `
-Seleccione un método de pago:
-1️⃣ PayPal
-2️⃣ Tarjeta de crédito o débito
-(Próximamente integración real)
-  `;
-  alert(opciones);
+// Botones de pago simulados
+document.getElementById('paypalBtn').onclick = ()=>{
+  alert("Redirigiendo a PayPal (simulado)...");
+};
+document.getElementById('cardBtn').onclick = ()=>{
+  alert("Procesando pago con tarjeta (simulado)...");
 };
 </script>
 </body>
