@@ -1,309 +1,137 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tienda de Efraín</title>
-<style>
-:root {
-  --bg: #ffffff;
-  --text: #111111;
-  --muted: #777;
-  --card-bg: #fff;
-  --accent: #7c4dff;
-  --shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tienda de Efraín</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
 
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
-body{background:var(--bg);color:var(--text);}
-header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
-.logo{font-size:24px;font-weight:900;letter-spacing:1px;}
-.header-actions{display:flex;align-items:center;gap:14px;}
-.icon{cursor:pointer;font-size:20px;}
-main{max-width:1200px;margin:auto;padding:20px;}
-.breadcrumbs{font-size:14px;color:var(--muted);font-weight:600;}
-.page-title{font-size:38px;margin:6px 0 14px;font-weight:800;}
-.controls{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.controls button{background:var(--card-bg);border:1px solid #ccc;padding:8px 12px;border-radius:8px;color:var(--text);cursor:pointer;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
-.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;}
-.card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:200px;object-fit:cover;object-position:center;background:#f2f2f2;}
-.card .meta{padding:14px;flex:1;display:flex;flex-direction:column;}
-.card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
-.card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
-.card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;cursor:pointer;font-weight:600;}
-.card button:hover{opacity:0.9;}
+    header {
+      background-color: #2b2b2b;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
 
-/* Responsive móvil */
-@media (max-width: 768px) {
-  .grid { grid-template-columns: 1fr; gap: 16px; }
-  .card img { height: 250px; }
-  .header-inner { padding: 12px; }
-  .page-title { font-size: 28px; }
-}
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+    }
 
-/* carrito lateral */
-.cart-panel{
-  position:fixed;top:0;right:-400px;width:340px;height:100%;background:var(--card-bg);
-  box-shadow:-4px 0 20px rgba(0,0,0,0.2);transition:right .3s ease;display:flex;flex-direction:column;z-index:100;
-}
-.cart-panel.open{right:0;}
-.cart-header{padding:16px;font-size:20px;font-weight:700;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;align-items:center;}
-.cart-items{flex:1;overflow-y:auto;padding:14px;}
-.cart-item{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;}
-.cart-item button{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:700;}
-.cart-footer{border-top:1px solid #ccc;padding:16px;}
-.cart-total{font-weight:800;margin-bottom:10px;text-align:right;}
+    nav {
+      display: flex;
+      gap: 15px;
+    }
 
-/* Botones de pago */
-.payment-options{display:flex;flex-direction:column;gap:10px;margin-top:10px;}
-.pay-btn{
-  display:flex;align-items:center;justify-content:center;gap:8px;
-  border:none;border-radius:8px;padding:10px 14px;font-weight:700;font-size:15px;cursor:pointer;
-}
-.paypal{background:#ffc439;color:#111;}
-.paypal img{height:18px;}
-.cardpay{background:#0070ba;color:#fff;}
-.cardpay img{height:20px;filter:invert(1);}
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
 
-/* notificación */
-.toast{
-  position:fixed;bottom:30px;left:50%;transform:translateX(-50%);
-  background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;
-}
-.toast.show{opacity:1;bottom:60px;}
+    .search-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-/* búsqueda */
-.search-bar {
-  display:none;
-  margin-bottom: 20px;
-  text-align:center;
-}
-.search-bar input {
-  width: 90%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background: var(--card-bg);
-  color: var(--text);
-  font-size: 15px;
-}
+    .search-container input {
+      padding: 8px;
+      border-radius: 5px;
+      border: none;
+      width: 200px;
+    }
 
-/* Menú hamburguesa */
-#menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
-.menu-dropdown {
-  position: fixed;
-  top: 0; left: -270px;
-  width: 250px; height: 100%;
-  background: var(--card-bg);
-  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-  transition: left 0.3s ease;
-  z-index: 25;
-  padding: 60px 20px 20px;
-  display: flex; flex-direction: column;
-}
-.menu-dropdown.open { left: 0; }
-.menu-item {
-  padding: 14px 0;
-  border-bottom: 2px solid #e1e1e1;
-  cursor: pointer;
-  font-size: 16px;
-  color: var(--text);
-  font-weight: 600;
-}
-.menu-item:hover { color: var(--accent); }
-.menu-overlay {
-  position: fixed;top: 0;left: 0;width: 100%;height: 100%;
-  background: rgba(0,0,0,0.2);z-index: 24;
-  opacity: 0;visibility: hidden;transition: opacity 0.3s ease;
-}
-.menu-overlay.show {opacity: 1;visibility: visible;}
-</style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 10px;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+
+    .product:hover {
+      transform: scale(1.03);
+    }
+
+    .product img {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .price {
+      color: green;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div id="menuBtn" title="Menú">☰</div>
+  <header>
     <div class="logo">Tienda de Efraín</div>
-    <div class="header-actions">
-      <div id="searchBtn" class="icon" title="Buscar">
-        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar" width="22">
-      </div>
-      <div id="cartBtn" class="icon" title="Carrito">
-        <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" width="22">
-      </div>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="Buscar productos...">
     </div>
-  </div>
-</header>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Categorías</a>
+      <a href="#">Carrito</a>
+    </nav>
+  </header>
 
-<!-- Menú -->
-<div class="menu-overlay" id="menuOverlay"></div>
-<div class="menu-dropdown" id="menuDropdown">
-  <div class="menu-item">Gorras</div>
-  <div class="menu-item">Camisetas</div>
-  <div class="menu-item">Sudaderas</div>
-  <div class="menu-item">Tenis</div>
-  <div class="menu-item">Fragancias</div>
-  <div class="menu-item">Relojes</div>
-  <div class="menu-item">Cintos</div>
-</div>
-
-<main>
-  <div class="breadcrumbs">INICIO &gt; PRODUCTOS</div>
-  <h1 class="page-title">Productos disponibles</h1>
-
-  <div class="search-bar" id="searchBar">
-    <input type="text" id="searchInput" placeholder="Buscar producto (ej. 'CT', 'gorras', etc.)">
-  </div>
-
-  <div class="controls">
-    <button id="filterBtn">Filtrar y ordenar ▾</button>
-    <div id="productCount">3 productos</div>
-  </div>
-
-  <section class="grid" id="productsGrid">
-    <div class="card" data-name="Gorra Galaxy CT" data-price="18000">
-      <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
-        <div class="price">$18,000.00</div>
-        <button class="add-btn">Agregar al carrito</button>
+  <main>
+    <div class="product-grid" id="productGrid">
+      <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Producto 1">
+        <h3>Playera Azul</h3>
+        <p class="price">$250</p>
+        <button onclick="window.location.href='producto1.html'">Ver producto</button>
+      </div>
+      <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Producto 2">
+        <h3>Tenis Blancos</h3>
+        <p class="price">$890</p>
+        <button onclick="window.location.href='producto2.html'">Ver producto</button>
+      </div>
+      <div class="product">
+        <img src="https://via.placeholder.com/200" alt="Producto 3">
+        <h3>Gorra Negra</h3>
+        <p class="price">$150</p>
+        <button onclick="window.location.href='producto3.html'">Ver producto</button>
       </div>
     </div>
-    <div class="card" data-name="Gorra Star CT" data-price="4500">
-      <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
-        <div class="price">$4,500.00</div>
-        <button class="add-btn">Agregar al carrito</button>
-      </div>
-    </div>
-    <div class="card" data-name="Gorra Oriental Tumbado" data-price="3300">
-      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
-        <div class="price">$3,300.00</div>
-        <button class="add-btn">Agregar al carrito</button>
-      </div>
-    </div>
-  </section>
-</main>
+  </main>
 
-<!-- Carrito -->
-<div class="cart-panel" id="cartPanel">
-  <div class="cart-header">
-    <span>Carrito</span>
-    <span id="closeCart" style="cursor:pointer;">✕</span>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer">
-    <div class="cart-total" id="cartTotal">Total: $0</div>
-    <div class="payment-options">
-      <button class="pay-btn paypal" id="paypalBtn">
-        <img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-100px.png" alt="PayPal">
-        Pagar con PayPal
-      </button>
-      <button class="pay-btn cardpay" id="cardBtn">
-        <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Tarjeta">
-        Pagar con Tarjeta
-      </button>
-    </div>
-  </div>
-</div>
+  <script>
+    // Búsqueda insensible a mayúsculas/minúsculas
+    const searchInput = document.getElementById('searchInput');
+    const productGrid = document.getElementById('productGrid');
+    const products = productGrid.getElementsByClassName('product');
 
-<!-- Notificación -->
-<div class="toast" id="toast">Producto agregado al carrito</div>
+    searchInput.addEventListener('input', () => {
+      const filter = searchInput.value.toLowerCase();
+      for (let i = 0; i < products.length; i++) {
+        const name = products[i].querySelector('h3').innerText.toLowerCase();
+        products[i].style.display = name.includes(filter) ? '' : 'none';
+      }
+    });
+  </script>
 
-<script>
-const cartBtn = document.getElementById('cartBtn');
-const searchBtn = document.getElementById('searchBtn');
-const menuBtn = document.getElementById('menuBtn');
-const menuDropdown = document.getElementById('menuDropdown');
-const menuOverlay = document.getElementById('menuOverlay');
-const cartPanel = document.getElementById('cartPanel');
-const closeCart = document.getElementById('closeCart');
-const toast = document.getElementById('toast');
-const cartItems = document.getElementById('cartItems');
-const addBtns = document.querySelectorAll('.add-btn');
-const searchBar = document.getElementById('searchBar');
-const searchInput = document.getElementById('searchInput');
-let cart = [];
-
-// carrito
-cartBtn.onclick = ()=> cartPanel.classList.add('open');
-closeCart.onclick = ()=> cartPanel.classList.remove('open');
-
-// menú hamburguesa
-menuBtn.onclick = () => {
-  menuDropdown.classList.toggle('open');
-  menuOverlay.classList.toggle('show');
-};
-menuOverlay.onclick = () => {
-  menuDropdown.classList.remove('open');
-  menuOverlay.classList.remove('show');
-};
-
-// búsqueda avanzada
-searchBtn.onclick = () => {
-  searchBar.style.display = searchBar.style.display === 'block' ? 'none' : 'block';
-  searchInput.focus();
-};
-searchInput.addEventListener('input', e => {
-  const term = e.target.value.trim().toLowerCase();
-  document.querySelectorAll('.card').forEach(card => {
-    const name = card.dataset.name.toLowerCase();
-    card.style.display = name.includes(term) ? 'flex' : 'none';
-  });
-});
-
-// agregar producto
-addBtns.forEach(btn=>{
-  btn.onclick = e=>{
-    const card = e.target.closest('.card');
-    const name = card.dataset.name;
-    const price = Number(card.dataset.price);
-    cart.push({name, price});
-    renderCart();
-    showToast("Producto agregado al carrito");
-  };
-});
-
-function renderCart(){
-  cartItems.innerHTML = "";
-  let total = 0;
-  cart.forEach((p,i)=>{
-    const item = document.createElement('div');
-    item.className = 'cart-item';
-    item.innerHTML = `<span>${p.name}</span>
-                      <span>$${p.price.toLocaleString('es-MX')}</span>
-                      <button onclick="removeItem(${i})">✕</button>`;
-    cartItems.appendChild(item);
-    total += p.price;
-  });
-  document.getElementById('cartTotal').textContent = "Total: $" + total.toLocaleString('es-MX');
-}
-
-function removeItem(index){
-  cart.splice(index,1);
-  renderCart();
-}
-
-function showToast(msg){
-  toast.textContent = msg;
-  toast.classList.add('show');
-  setTimeout(()=> toast.classList.remove('show'), 2000);
-}
-
-// Botones de pago simulados
-document.getElementById('paypalBtn').onclick = ()=>{
-  alert("Redirigiendo a PayPal (simulado)...");
-};
-document.getElementById('cardBtn').onclick = ()=>{
-  alert("Procesando pago con tarjeta (simulado)...");
-};
-</script>
 </body>
 </html>
