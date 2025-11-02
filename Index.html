@@ -65,21 +65,65 @@ main{max-width:1200px;margin:auto;padding:20px;}
 /* modo oscuro toggle */
 #darkToggle{font-size:18px;cursor:pointer;width: 18px; height: 18px;}
 #cartBtn img { width: 20px; height: 20px; }
+#searchBtn img { width: 20px; height: 20px; }
+
+/* Menú hamburguesa */
+#menuBtn { cursor: pointer; font-size: 20px; z-index: 30; }
+.menu-dropdown {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background: var(--card-bg);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  transition: left 0.3s ease;
+  z-index: 25;
+  padding: 60px 20px 20px;
+  display: flex;
+  flex-direction: column;
+}
+.menu-dropdown.open { left: 0; }
+.menu-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 16px;
+  color: var(--text);
+}
+.menu-item:hover { color: var(--accent); }
+.menu-item:last-child { border-bottom: none; }
+body.dark .menu-item { border-bottom-color: #333; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
+    <div id="menuBtn" title="Menú">☰</div>
     <div class="logo">Ferv</div>
     <div class="header-actions">
       <img id="darkToggle" src="URL_DEL_LOGO_LUPITA.png" alt="Modo oscuro" title="Modo oscuro">
+      <div id="searchBtn" class="icon" title="Buscar">
+        <img src="URL_DEL_ICONO_BUSCAR.png" alt="Buscar">
+      </div>
       <div id="cartBtn" class="icon" title="Carrito">
         <img src="URL_DEL_ICONO_CARRITO.png" alt="Carrito">
       </div>
     </div>
   </div>
 </header>
+
+<!-- Menú desplegable -->
+<div class="menu-dropdown" id="menuDropdown">
+  <div class="menu-item" data-category="gorras">Gorras</div>
+  <div class="menu-item" data-category="camisetas">Camisetas</div>
+  <div class="menu-item" data-category="sudaderas">Sudaderas</div>
+  <div class="menu-item" data-category="tenis">Tenis</div>
+  <div class="menu-item" data-category="fragancias">Fragancias</div>
+  <div class="menu-item" data-category="relojes">Relojes</div>
+  <div class="menu-item" data-category="cintos">Cintos</div>
+</div>
 
 <main>
   <div class="breadcrumbs">CAPS &gt; BARBAS HATS</div>
@@ -99,15 +143,23 @@ main{max-width:1200px;margin:auto;padding:20px;}
       </div>
     </div>
     <div class="card" data-name="Gorra Galaxy" data-price="18000">
-      <img src="https://via.placeholder.com/400x300?text=Galaxy+CT" alt="Gorra Galaxy">
+      <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
         <div class="price">$18,000.00</div>
         <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
+    <div class="card" data-name="Gorra Star" data-price="4500">
+      <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
+        <div class="price">$4,500.00</div>
+        <button class="add-btn">Agregar al carrito</button>
+      </div>
+    </div>
     <div class="card" data-name="Gorra Oriental" data-price="3300">
-      <img src="https://via.placeholder.com/400x300?text=Oriental+Tumbado" alt="Gorra Oriental">
+      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
       <div class="meta">
         <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
         <div class="price">$3,300.00</div>
@@ -119,14 +171,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
       <div class="meta">
         <div class="title">GORRA EL BARBAS HATS MONEY CLUB</div>
         <div class="price">$2,800.00</div>
-        <button class="add-btn">Agregar al carrito</button>
-      </div>
-    </div>
-    <div class="card" data-name="Gorra Japonesa" data-price="4500">
-      <img src="URL_DE_LA_IMAGEN_GORRA_JAPONESA.jpg" alt="Gorra Japonesa">
-      <div class="meta">
-        <div class="title">Gorra Japonesa Estilo Oriental</div>
-        <div class="price">$4,500.00</div>
         <button class="add-btn">Agregar al carrito</button>
       </div>
     </div>
@@ -151,11 +195,15 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <script>
 const darkToggle = document.getElementById('darkToggle');
 const cartBtn = document.getElementById('cartBtn');
+const searchBtn = document.getElementById('searchBtn');
+const menuBtn = document.getElementById('menuBtn');
+const menuDropdown = document.getElementById('menuDropdown');
 const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
 const addBtns = document.querySelectorAll('.add-btn');
+const menuItems = document.querySelectorAll('.menu-item');
 let cart = [];
 
 // modo oscuro
@@ -168,6 +216,21 @@ darkToggle.onclick = () => {
 // carrito
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
 closeCart.onclick = ()=> cartPanel.classList.remove('open');
+
+// buscar (función demo)
+searchBtn.onclick = () => {
+  alert('Función de búsqueda (demo)');
+};
+
+// menú hamburguesa
+menuBtn.onclick = () => menuDropdown.classList.toggle('open');
+menuItems.forEach(item => {
+  item.onclick = () => {
+    const category = item.dataset.category;
+    alert(`Navegar a categoría: ${category.toUpperCase()}`); // Demo: redirigir a página de categoría
+    menuDropdown.classList.remove('open');
+  };
+});
 
 // agregar producto
 addBtns.forEach(btn=>{
@@ -183,12 +246,15 @@ addBtns.forEach(btn=>{
 
 function renderCart(){
   cartItems.innerHTML = "";
+  let total = 0;
   cart.forEach((p,i)=>{
     const item = document.createElement('div');
     item.className = 'cart-item';
     item.innerHTML = `<span>${p.name}</span><span>$${p.price.toLocaleString('es-MX')}</span>`;
     cartItems.appendChild(item);
+    total += p.price;
   });
+  // Opcional: agregar total en cart-footer si quieres
 }
 
 function showToast(msg){
