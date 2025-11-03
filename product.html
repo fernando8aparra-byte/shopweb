@@ -1,147 +1,143 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title id="pageTitle">Producto - Boutique Buendía</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Producto | Boutique Buendía</title>
+
 <style>
-/* --- TODO TU CSS TAL CUAL, SIN CAMBIAR --- */
-:root{
-  --bg:#fff;
-  --text:#111;
-  --muted:#777;
-  --card-bg:#fff;
-  --accent:#7c4dff;
-  --shadow:0 8px 20px rgba(0,0,0,0.08);
+:root {
+  --bg: #ffffff;
+  --text: #111;
+  --muted: #777;
+  --card-bg: #fff;
+  --accent: #7c4dff;
+  --shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
-body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
-header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:40;}
-.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
-#menuBtn{cursor:pointer;font-size:26px;}
-.logo{font-weight:900;font-size:20px;letter-spacing:1px;}
-.header-actions{display:flex;gap:12px;align-items:center;}
-.icon img{width:22px;height:22px;display:block;}
-main{max-width:1200px;margin:24px auto;padding:0 20px 80px;}
-.breadcrumbs{font-size:13px;color:var(--muted);margin-bottom:12px;}
-.product-wrap{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;}
-.product-media{flex:1 1 420px;min-width:300px;max-width:520px;}
-.product-media img{width:100%;border-radius:12px;box-shadow:var(--shadow);}
-.product-info{flex:1 1 420px;min-width:300px;}
-.page-title{font-size:26px;margin-bottom:8px;font-weight:800;}
-.price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:12px;}
-.desc{color:var(--muted);line-height:1.6;margin-bottom:18px;}
-.qty-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.qty-row input{width:80px;padding:8px;border-radius:8px;border:1px solid #ddd;text-align:center;font-size:15px;}
-.add-btn{background:var(--accent);color:#fff;border:none;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;}
-.related{margin-top:48px;}
-.related h2{font-size:20px;margin-bottom:14px;font-weight:800;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
-.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:.18s;}
-.card:hover{transform:translateY(-6px);}
-.card img{width:100%;height:220px;object-fit:contain;background:#fafafa;}
-.meta{padding:12px;}
-.meta .title{font-weight:700;font-size:14px;margin-bottom:8px;}
-.meta .price{font-weight:800;}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--accent);color:#fff;padding:14px 20px;border-radius:10px;opacity:0;transition:.35s;z-index:60;}
-.toast.show{opacity:1;}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--text);}
+header{background:#fff;border-bottom:1px solid #ddd;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;}
+.logo{font-weight:900;font-size:22px;}
+.login-btn{background:none;border:none;color:var(--accent);cursor:pointer;font-weight:600;}
+.icon img{width:22px;cursor:pointer;}
+
+main{max-width:1100px;margin:auto;padding:20px;}
+
+.product-container{display:flex;flex-wrap:wrap;gap:30px;}
+.product-img{flex:1;min-width:260px;}
+.product-img img{width:100%;border-radius:10px;box-shadow:var(--shadow);}
+
+.product-info{flex:1;min-width:260px;display:flex;flex-direction:column;gap:12px;}
+.product-title{font-size:26px;font-weight:800;}
+.product-price{font-size:22px;font-weight:700;margin-top:6px;}
+.add-cart-btn{background:var(--accent);color:white;border:none;padding:12px;border-radius:8px;font-size:17px;font-weight:600;cursor:pointer;}
+.add-cart-btn:hover{opacity:0.9;}
+
+.related-title{margin-top:50px;font-size:22px;font-weight:700;}
+.related-row{display:flex;overflow-x:auto;gap:14px;padding-bottom:10px;margin-top:16px;}
+.related-card{min-width:160px;background:#fff;border-radius:8px;box-shadow:var(--shadow);cursor:pointer;}
+.related-card img{width:100%;border-radius:8px 8px 0 0;background:#f3f3f3;height:150px;object-fit:contain;}
+.related-card .name{font-size:14px;padding:8px;font-weight:600;}
+.related-card .price{font-size:14px;padding:0 8px 12px;font-weight:700;color:var(--accent);}
+
+.toast{position:fixed;bottom:-70px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;}
+.toast.show{bottom:60px;opacity:1;}
 </style>
 </head>
+
 <body>
 
 <header>
-  <div class="header-inner">
-    <div id="menuBtn">☰</div>
-    <div class="logo">Boutique Buendía</div>
-    <div id="cartBtn" class="icon">
-      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
-    </div>
+  <div class="logo">Boutique Buendía</div>
+  <div style="display:flex;align-items:center;gap:14px;">
+    <button id="loginBtn" class="login-btn">Iniciar Sesión</button>
+    <div id="cartBtn" class="icon"><img src="https://cdn-icons-png.flaticon.com/512/833/833314.png"></div>
   </div>
 </header>
 
 <main>
-  <div class="breadcrumbs" id="breadcrumbs"></div>
-
-  <section class="product-wrap">
-    <div class="product-media">
-      <img id="productImg" src="">
+  <div class="product-container">
+    <div class="product-img">
+      <img id="prodImg">
     </div>
 
     <div class="product-info">
-      <div class="page-title" id="productName"></div>
-      <div class="price" id="productPrice"></div>
-      <div class="desc" id="productDesc"></div>
-
-      <div class="qty-row">
-        <label>Cantidad</label>
-        <input id="qty" type="number" min="1" value="1">
-      </div>
-
-      <button class="add-btn" id="addToCartBtn">Agregar al carrito</button>
+      <div class="product-title" id="prodName"></div>
+      <div class="product-price" id="prodPrice"></div>
+      <div id="prodDesc" style="color:var(--muted);font-size:14px;"></div>
+      <button id="addCartBtn" class="add-cart-btn">Agregar al carrito</button>
     </div>
-  </section>
+  </div>
 
-  <section class="related">
-    <h2>También podría interesarte</h2>
-    <div class="grid" id="relatedGrid"></div>
-  </section>
+  <div class="related-title">También te podría gustar</div>
+  <div class="related-row" id="relatedRow"></div>
 </main>
 
-<div class="toast" id="toast">Producto agregado 🛒</div>
+<div class="toast" id="toast">Agregado al carrito</div>
 
 <script>
-const params = new URLSearchParams(location.search);
-const id = params.get("id");
-
-// obtiene productos
 let productos = JSON.parse(localStorage.getItem("productos")) || [];
-let producto = productos.find(p => p.id == id);
-
-if(!producto){
-  document.body.innerHTML = "<center><h2>Producto no encontrado</h2></center>";
-} else {
-  document.getElementById("pageTitle").textContent = producto.nombre;
-  document.getElementById("productImg").src = producto.imagen;
-  document.getElementById("productName").textContent = producto.nombre;
-  document.getElementById("productPrice").textContent = "$" + producto.precio.toLocaleString('es-MX');
-  document.getElementById("productDesc").textContent = producto.descripcion;
-  document.getElementById("breadcrumbs").textContent = "INICIO > " + producto.nombre;
-}
-
-// carrito
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-document.getElementById("addToCartBtn").onclick = ()=>{
-  const qty = Math.max(1, parseInt(document.getElementById("qty").value));
-  for(let i=0; i<qty; i++){
-    cart.push({name: producto.nombre, price: producto.precio});
+/* Detectar usuario para mostrar Bienvenida */
+function actualizarHeader(){
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  if(usuario){
+    loginBtn.style.display="none";
+    document.querySelector("header").insertAdjacentHTML("beforeend",
+      `<span style="font-weight:600;color:var(--accent);margin-left:10px;">Bienvenido, ${usuario.nombre} 👋</span>`
+    );
   }
+}
+
+/* Obtener ID desde URL */
+const params = new URLSearchParams(window.location.search);
+const id = Number(params.get("id"));
+const prod = productos.find(p => p.id == id);
+
+/* Si no existe producto → regresar */
+if(!prod){
+  document.body.innerHTML = "<h2 style='text-align:center;margin-top:60px;'>Producto no encontrado</h2>";
+}
+
+/* Rellenar */
+document.getElementById("prodImg").src = prod.imagen;
+document.getElementById("prodName").innerText = prod.nombre;
+document.getElementById("prodPrice").innerText = "$" + prod.precio.toLocaleString("es-MX");
+document.getElementById("prodDesc").innerText = prod.descripcion;
+
+/* Agregar al carrito */
+document.getElementById("addCartBtn").onclick = () => {
+  cart.push({ name: prod.nombre, price: prod.precio });
   localStorage.setItem("cart", JSON.stringify(cart));
   showToast();
 };
 
-// toast
+/* Toast */
 function showToast(){
-  const t = document.getElementById("toast");
-  t.classList.add("show");
-  setTimeout(()=> t.classList.remove("show"), 2000);
+  toast.classList.add("show");
+  setTimeout(()=> toast.classList.remove("show"), 2000);
 }
 
-// relacionados
-let keyword = producto.nombre.split(" ")[0].toLowerCase();
-let rel = productos.filter(p=> p.id != producto.id && p.nombre.toLowerCase().includes(keyword)).slice(0,4);
+/* Relacionados */
+let relacionados = productos.filter(p => p.id !== prod.id).slice(0,6);
+const row = document.getElementById("relatedRow");
 
-let grid = document.getElementById("relatedGrid");
-rel.forEach(r=>{
-  grid.innerHTML += `
-    <div class="card" onclick="location.href='product.html?id=${r.id}'">
+relacionados.forEach(r=>{
+  row.innerHTML += `
+    <div class="related-card" onclick="window.location='product.html?id=${r.id}'">
       <img src="${r.imagen}">
-      <div class="meta">
-        <div class="title">${r.nombre}</div>
-        <div class="price">$${r.precio.toLocaleString('es-MX')}</div>
-      </div>
-    </div>`;
+      <div class="name">${r.nombre}</div>
+      <div class="price">$${r.precio.toLocaleString('es-MX')}</div>
+    </div>
+  `;
 });
+
+/* Botón carrito */
+cartBtn.onclick = ()=> window.location="index.html#carrito";
+
+/* Ejecutar bienvenida */
+actualizarHeader();
 </script>
+
 </body>
 </html>
