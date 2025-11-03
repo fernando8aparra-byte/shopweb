@@ -190,14 +190,20 @@ const forgotPassword = document.getElementById('forgotPassword');
 const registroLink = document.getElementById('registroLink');
 const productsGrid = document.getElementById('productsGrid');
 const pageTitle = document.getElementById('pageTitle');
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let productos = [];
 let currentSection = 'todos'; // Por defecto, todos
 
-// Cargar productos de localStorage
+// Cargar y renderizar productos
 function cargarProductos() {
   productos = JSON.parse(localStorage.getItem('productos')) || [];
+  // Asignar IDs si no tienen
+  productos.forEach((p, i) => {
+    if (!p.id) p.id = i + 1;
+  });
+  localStorage.setItem('productos', JSON.stringify(productos));
   renderProductos(currentSection);
+  renderCart(); // Cargar carrito al inicio
 }
 
 // Render productos filtrados por sección
@@ -211,54 +217,37 @@ function renderProductos(section) {
   }
   if (filteredProductos.length === 0) {
     grid.innerHTML = '<div class="proximamente-box"><img src="https://cdn-icons-png.flaticon.com/512/814/814513.png"><h2>No hay productos</h2><p>Esta sección estará disponible muy pronto.</p></div>';
+    pageTitle.textContent = `${section.charAt(0).toUpperCase() + section.slice(1)}`;
     return;
   }
   filteredProductos.forEach(p => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.onclick = () => window.location = `product.html?id=${p.id}`;
     card.innerHTML = `
       <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/240?text=Imagen+No+Disponible'">
       <div class="meta">
         <div class="title">${p.nombre}</div>
         <div class="price">$${p.precio.toLocaleString('es-MX')}</div>
         <div class="description">${p.descripcion}</div>
-        <button class="add-btn" onclick="agregarAlCarrito('${p.nombre}', ${p.precio})">Agregar al carrito</button>
+        <button class="add-btn" onclick="event.stopPropagation(); agregarAlCarrito('${p.nombre}', ${p.precio})" style="margin-top:auto;">Agregar al carrito</button>
       </div>
     `;
     grid.appendChild(card);
   });
-  pageTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + ' disponibles';
-  if (section !== 'todos') pageTitle.textContent = `${section.charAt(0).toUpperCase() + section.slice(1)}`;
+  pageTitle.textContent = section === 'todos' ? 'Productos disponibles' : `${section.charAt(0).toUpperCase() + section.slice(1)}`;
 }
 
-// Agregar al carrito (adaptado para productos dinámicos)
+// Agregar al carrito
 function agregarAlCarrito(name, price) {
   cart.push({name, price});
+  localStorage.setItem('cart', JSON.stringify(cart));
   renderCart();
   animateCart();
   showToast("Producto agregado con éxito 🛒");
 }
 
-menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
-menuOverlay.onclick = closeMenu;
-menuClose.onclick = closeMenu;
-function closeMenu(){ menuDropdown.classList.remove('open'); menuOverlay.classList.remove('show'); }
-
-cartBtn.onclick = ()=> cartPanel.classList.add('open');
-closeCart.onclick = ()=> cartPanel.classList.remove('open');
-
-loginBtn.onclick = () => { loginPanel.classList.add('open'); };
-closeLogin.onclick = () => { loginPanel.classList.remove('open'); forgotPassword.style.display = 'none'; };
-
-// Menú items - ahora filtra productos en lugar de proximamente
-document.querySelectorAll('.menu-item').forEach(item => {
-  item.onclick = () => {
-    const section = item.dataset.section;
-    renderProductos(section);
-    closeMenu();
-  };
-});
-
+// Render carrito
 function renderCart(){
   cartItems.innerHTML = "";
   if(cart.length === 0){
@@ -279,7 +268,11 @@ function renderCart(){
   document.getElementById('cartTotal').textContent = "Total: $" + total.toLocaleString('es-MX');
 }
 
-function removeItem(i){ cart.splice(i,1); renderCart(); }
+function removeItem(i){ 
+  cart.splice(i,1); 
+  localStorage.setItem('cart', JSON.stringify(cart));
+  renderCart(); 
+}
 
 function animateCart(){
   const img = cartBtn.querySelector('img');
@@ -293,22 +286,44 @@ function showToast(msg){
   setTimeout(()=> toast.classList.remove('show'), 2500);
 }
 
+// Menú
+menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
+menuOverlay.onclick = closeMenu;
+menuClose.onclick = closeMenu;
+function closeMenu(){ menuDropdown.classList.remove('open'); menuOverlay.classList.remove('show'); }
+
+cartBtn.onclick = ()=> cartPanel.classList.add('open');
+closeCart.onclick = ()=> cartPanel.classList.remove('open');
+
+loginBtn.onclick = () => { loginPanel.classList.add('open'); };
+closeLogin.onclick = () => { loginPanel.classList.remove('open'); forgotPassword.style.display = 'none'; };
+
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.onclick = () => {
+    const section = item.dataset.section;
+    renderProductos(section);
+    closeMenu();
+  };
+});
+
+// Pagos - guardar compra
 document.getElementById('paypalBtn').onclick = () => {
   if (cart.length === 0) {
     showToast('Carrito vacío. Agrega productos primero.');
     return;
   }
-  // Simular compra: guardar en localStorage para admin
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
   const compras = JSON.parse(localStorage.getItem('compras')) || [];
   compras.push({
     items: cart.map(item => ({nombre: item.name, precio: item.price})),
-    total: cart.reduce((sum, item) => sum + item.price, 0),
+    total,
     fecha: new Date().toLocaleString('es-MX')
   });
   localStorage.setItem('compras', JSON.stringify(compras));
-  alert("¡Pago exitoso con PayPal! Redirigiendo...");
+  localStorage.removeItem('cart');
   cart = [];
   renderCart();
+  alert("¡Pago exitoso con PayPal! Redirigiendo...");
   showToast('Compra realizada con éxito. ¡Gracias!');
 };
 
@@ -317,31 +332,30 @@ document.getElementById('cardBtn').onclick = () => {
     showToast('Carrito vacío. Agrega productos primero.');
     return;
   }
-  // Simular compra igual
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
   const compras = JSON.parse(localStorage.getItem('compras')) || [];
   compras.push({
     items: cart.map(item => ({nombre: item.name, precio: item.price})),
-    total: cart.reduce((sum, item) => sum + item.price, 0),
+    total,
     fecha: new Date().toLocaleString('es-MX')
   });
   localStorage.setItem('compras', JSON.stringify(compras));
-  alert("¡Pago exitoso con Tarjeta! Redirigiendo...");
+  localStorage.removeItem('cart');
   cart = [];
   renderCart();
+  alert("¡Pago exitoso con Tarjeta! Redirigiendo...");
   showToast('Compra realizada con éxito. ¡Gracias!');
 };
 
-// Lógica de Login
+// Login
 loginForm.addEventListener('submit', (e) => {
   e.preventDefault();
   const username = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value.trim();
 
   if (username === 'Buendía' && password === 'shop') {
-    // Redirigir al panel de admin
     window.location.href = 'admin.html';
   } else {
-    // Mostrar "Olvidé mi contraseña"
     forgotPassword.style.display = 'block';
     showToast('Credenciales incorrectas. Intenta de nuevo.');
   }
@@ -356,7 +370,7 @@ registroLink.onclick = () => {
   alert('Registro próximamente disponible. ¡Mantente atento!');
 };
 
-// Cargar al iniciar
+// Inicializar
 document.addEventListener('DOMContentLoaded', () => {
   cargarProductos();
 });
