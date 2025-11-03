@@ -10,3 +10,14 @@
 .product-info button{margin-top:10px;}
 .related{max-width:1200px;margin:auto;padding:30px;}
 .related h2{font-size:22px;margin-bottom:16px;}
+
+@keyframes shake {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+  75% { transform: rotate(-10deg); }
+  100% { transform: rotate(0deg); }
+}
+.shake {
+  animation: shake 0.6s;
+}
