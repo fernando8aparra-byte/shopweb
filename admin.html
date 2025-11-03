@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Panel de Administración | Boutique Buendía</title>
+<style>
+body {
+  font-family: Inter, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+header {
+  background: #111;
+  color: #fff;
+  padding: 15px 20px;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+main {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+h2 {
+  margin-bottom: 10px;
+}
+form {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-bottom: 30px;
+}
+form input, form textarea {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+form button {
+  background: #7c4dff;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+th {
+  background: #eee;
+}
+.action-btn {
+  background: #ff5252;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.action-btn.edit {
+  background: #2196f3;
+  margin-right: 6px;
+}
+</style>
+</head>
+<body>
+<header>Panel de Administración — Boutique Buendía</header>
+<main>
+  <h2>Agregar nuevo producto</h2>
+  <form id="productForm">
+    <input type="text" id="nombre" placeholder="Nombre del producto" required>
+    <input type="number" id="precio" placeholder="Precio (MXN)" required>
+    <input type="text" id="imagen" placeholder="URL de la imagen" required>
+    <textarea id="descripcion" placeholder="Descripción del producto"></textarea>
+    <button type="submit">Agregar producto</button>
+  </form>
+
+  <h2>Lista de productos</h2>
+  <table id="tablaProductos">
+    <thead>
+      <tr><th>Imagen</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</main>
+
+<script>
+let productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+const form = document.getElementById('productForm');
+const tabla = document.querySelector('#tablaProductos tbody');
+
+function renderProductos() {
+  tabla.innerHTML = '';
+  productos.forEach((p, i) => {
+    const fila = document.createElement('tr');
+    fila.innerHTML = `
+      <td><img src="${p.imagen}" width="60" style="border-radius:8px;"></td>
+      <td>${p.nombre}</td>
+      <td>$${p.precio.toLocaleString('es-MX')}</td>
+      <td>
+        <button class="action-btn edit" onclick="editar(${i})">Editar</button>
+        <button class="action-btn" onclick="eliminar(${i})">Eliminar</button>
+      </td>
+    `;
+    tabla.appendChild(fila);
+  });
+}
+
+form.onsubmit = e => {
+  e.preventDefault();
+  const nuevo = {
+    nombre: nombre.value,
+    precio: Number(precio.value),
+    imagen: imagen.value,
+    descripcion: descripcion.value
+  };
+  productos.push(nuevo);
+  localStorage.setItem('productos', JSON.stringify(productos));
+  form.reset();
+  renderProductos();
+  alert('Producto agregado con éxito ✅');
+};
+
+function eliminar(i) {
+  if (confirm('¿Eliminar este producto?')) {
+    productos.splice(i, 1);
+    localStorage.setItem('productos', JSON.stringify(productos));
+    renderProductos();
+  }
+}
+
+function editar(i) {
+  const p = productos[i];
+  nombre.value = p.nombre;
+  precio.value = p.precio;
+  imagen.value = p.imagen;
+  descripcion.value = p.descripcion;
+  eliminar(i);
+}
+
+renderProductos();
+</script>
+</body>
+</html>
