@@ -6,60 +6,35 @@
 <title>Boutique Buendía</title>
 
 <style>
-/* --- ESTILOS IGUALES A TU VERSIÓN ANTERIOR --- */
-:root {
-  --bg: #ffffff;
-  --text: #111;
-  --muted: #777;
-  --card-bg: #fff;
-  --accent: #7c4dff;
-  --shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
-body{background:var(--bg);color:var(--text);}
-header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
-.logo{font-size:24px;font-weight:900;letter-spacing:1px;}
-.login-btn {background:none;border:none;font-size:16px;font-weight:600;color:var(--accent);cursor:pointer;}
-.header-actions{display:flex;align-items:center;gap:14px;}
-.icon img{width:22px;cursor:pointer;}
-main{max-width:1200px;margin:auto;padding:20px;}
-.page-title{font-size:38px;margin-bottom:14px;font-weight:800;}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
-.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;cursor:pointer;transition:.2s;}
-.card:hover{transform:translateY(-4px);}
-.card img{width:100%;aspect-ratio:1/1;object-fit:contain;background:#f9f9f9;}
-.card .meta{padding:14px;display:flex;flex-direction:column;}
-.card .price{font-size:18px;font-weight:800;margin-bottom:8px;}
-.card button{background:var(--accent);color:#fff;border:none;padding:10px;border-radius:8px;font-weight:600;cursor:pointer;}
-.toast{position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 22px;border-radius:10px;transition:.4s;z-index:200;}
-.toast.show{bottom:60px;opacity:1;}
-.cart-panel{position:fixed;top:0;right:-400px;width:340px;height:100%;background:#fff;box-shadow:-4px 0 20px rgba(0,0,0,0.3);transition:.3s;padding:16px;z-index:100;}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:#fff;color:#111;}
+header{background:#fff;border-bottom:1px solid #ddd;position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+.logo{font-size:22px;font-weight:900;}
+.products-grid{max-width:1100px;margin:auto;padding:25px;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:25px;}
+.card{background:#fff;border-radius:12px;padding:10px;box-shadow:0 4px 12px rgba(0,0,0,0.12);text-align:center;cursor:pointer;}
+.card img{width:100%;height:200px;object-fit:cover;background:#f2f2f2;border-radius:10px;}
+.card .name{font-weight:600;margin-top:8px;}
+.card .price{font-weight:900;margin-top:4px;}
+#cartBtn img{width:25px;cursor:pointer;}
+
+.cart-panel{position:fixed;top:0;right:-400px;width:340px;height:100%;background:#fff;box-shadow:-4px 0 20px rgba(0,0,0,0.3);transition:.3s;padding:18px;z-index:100;}
 .cart-panel.open{right:0;}
-.cart-item{display:flex;justify-content:space-between;margin-bottom:12px;}
-.cart-item button{background:none;border:none;color:var(--accent);font-weight:bold;cursor:pointer;}
+.cart-item{display:flex;justify-content:space-between;margin-bottom:12px;font-size:14px;}
+.cart-item button{background:none;border:none;color:#7c4dff;font-weight:bold;cursor:pointer;}
+
+#loginBtn{background:none;border:none;color:#7c4dff;font-weight:600;font-size:16px;cursor:pointer;}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div id="menuBtn" style="font-size:26px;cursor:pointer;">☰</div>
-  
-  <!-- Botón login (se oculta si hay sesión) -->
-  <button id="loginBtn" class="login-btn">Iniciar Sesión</button>
-
+  <button id="loginBtn">Iniciar sesión</button>
   <div class="logo">Boutique Buendía</div>
-
-  <div class="header-actions">
-    <div id="cartBtn" class="icon">
-      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
-    </div>
-  </div>
+  <div id="cartBtn"><img src="https://cdn-icons-png.flaticon.com/512/833/833314.png"></div>
 </header>
 
 <main>
-  <h1 class="page-title" id="pageTitle">Productos disponibles</h1>
-  <section class="grid" id="productsGrid"></section>
+  <div class="products-grid" id="grid"></div>
 </main>
 
 <!-- Carrito -->
@@ -69,67 +44,106 @@ main{max-width:1200px;margin:auto;padding:20px;}
   <p id="cartTotal" style="text-align:right;font-weight:bold;"></p>
 </div>
 
-<div class="toast" id="toast">Producto agregado al carrito</div>
+<!-- LOGIN / REGISTRO -->
+<div id="loginPanel" style="position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:300;">
+  <div style="background:#fff;padding:25px;border-radius:12px;width:300px;text-align:center;">
+    
+    <h2 id="loginTitle">Iniciar Sesión</h2>
+
+    <input id="userInput" type="text" placeholder="Usuario" style="width:100%;padding:8px;margin-top:10px;">
+    <input id="passInput" type="password" placeholder="Contraseña" style="width:100%;padding:8px;margin-top:10px;">
+
+    <button id="loginAction" style="margin-top:15px;width:100%;padding:8px;background:#7c4dff;color:#fff;border:none;border-radius:8px;">Entrar</button>
+
+    <p style="margin-top:14px;font-size:14px;">
+      ¿No tienes cuenta? <span onclick="mostrarRegistro()" style="color:#7c4dff;cursor:pointer;">Regístrate</span>
+    </p>
+  </div>
+</div>
 
 <script>
-/* ------------------- PRODUCTOS / CARRITO ------------------- */
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
-let productos = JSON.parse(localStorage.getItem('productos')) || [];
+// ================= PRODUCTOS ==================
+let productos = JSON.parse(localStorage.getItem("productos")) || [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 function renderProductos(){
-  const grid = document.getElementById("productsGrid");
-  grid.innerHTML = '';
+  const grid = document.getElementById("grid");
+  grid.innerHTML = "";
   productos.forEach(p=>{
     grid.innerHTML += `
-    <div class="card" onclick="window.location='product.html?id=${p.id}'">
-      <img src="${p.imagen}">
-      <div class="meta">
+      <div class="card" onclick="window.location='product.html?id=${p.id}'">
+        <img src="${p.imagen}">
+        <div class="name">${p.nombre}</div>
         <div class="price">$${p.precio}</div>
-        <div>${p.nombre}</div>
-        <button onclick="event.stopPropagation(); agregar('${p.nombre}', ${p.precio})">Agregar</button>
       </div>
-    </div>`;
+    `;
   });
 }
+renderProductos();
 
-function agregar(n, pr){
-  cart.push({n, pr});
-  localStorage.setItem('cart', JSON.stringify(cart));
-  showToast();
-  renderCart();
-}
-
+// ================= CARRITO ==================
 function renderCart(){
-  const box = document.getElementById("cartItems");
-  box.innerHTML = '';
-  let total = 0;
-  cart.forEach((p,i)=>{
-    total+=p.pr;
-    box.innerHTML+=`<div class="cart-item">${p.n} - $${p.pr}<button onclick="removeItem(${i})">✕</button></div>`;
+  const c=document.getElementById("cartItems");
+  c.innerHTML="";
+  let total=0;
+  cart.forEach((p,i)=>{total+=p.pr;
+    c.innerHTML+=`<div class="cart-item">${p.n} - $${p.pr}<button onclick="removeItem(${i})">✕</button></div>`;
   });
-  document.getElementById("cartTotal").textContent = "Total: $" + total;
+  document.getElementById("cartTotal").textContent="Total: $" + total;
 }
-
 function removeItem(i){
   cart.splice(i,1);
-  localStorage.setItem('cart', JSON.stringify(cart));
+  localStorage.setItem("cart",JSON.stringify(cart));
   renderCart();
 }
+document.getElementById("cartBtn").onclick=()=>document.getElementById("cartPanel").classList.add("open");
+document.getElementById("cartPanel").onclick=()=>document.getElementById("cartPanel").classList.remove("open");
+renderCart();
 
-function showToast(){
-  const t = document.getElementById("toast");
-  t.classList.add("show");
-  setTimeout(()=> t.classList.remove("show"),2500);
+// ================= LOGIN ==================
+document.getElementById("loginBtn").onclick=()=>document.getElementById("loginPanel").style.display="flex";
+
+function iniciarSesion(){
+  let user=userInput.value.trim();
+  let pass=passInput.value.trim();
+
+  if(user==="admin" && pass==="admin123"){
+    localStorage.setItem("usuario",JSON.stringify({nombre:"Admin",tipo:"admin"}));
+    location.reload();
+    return;
+  }
+
+  let usuarios=JSON.parse(localStorage.getItem("usuarios"))||[];
+  let encontrado=usuarios.find(u=>u.nombre===user && u.pass===pass);
+
+  if(encontrado){
+    localStorage.setItem("usuario",JSON.stringify({nombre:encontrado.nombre,tipo:"cliente"}));
+    location.reload();
+  } else alert("Datos incorrectos");
+}
+document.getElementById("loginAction").onclick=iniciarSesion;
+
+function mostrarRegistro(){
+  document.getElementById("loginTitle").innerText="Crear Cuenta";
+  document.getElementById("loginAction").innerText="Registrarme";
+  document.getElementById("loginAction").onclick=registrarse;
 }
 
-document.getElementById("cartBtn").onclick = ()=> document.getElementById("cartPanel").classList.add("open");
-document.getElementById("cartPanel").onclick = ()=> document.getElementById("cartPanel").classList.remove("open");
+function registrarse(){
+  let user=userInput.value.trim();
+  let pass=passInput.value.trim();
+  if(!user||!pass)return alert("Completa todo");
 
-renderProductos();
-renderCart();
+  let usuarios=JSON.parse(localStorage.getItem("usuarios"))||[];
+  usuarios.push({nombre:user,pass:pass});
+  localStorage.setItem("usuarios",JSON.stringify(usuarios));
+  alert("Cuenta creada ✅ Ahora inicia sesión");
+  location.reload();
+}
 </script>
 
-<!-- ✅ Aquí se activa el header global -->
+<!-- ✅ HEADER GLOBAL -->
 <script src="js/header.js"></script>
 
 </body>
