@@ -251,5 +251,72 @@ document.querySelectorAll('.menu-item').forEach(item=>{
 document.getElementById('paypalBtn').onclick = ()=>alert("Redirigiendo a PayPal (simulado)...");
 document.getElementById('cardBtn').onclick = ()=>alert("Procesando pago con tarjeta (simulado)...");
 </script>
+  <script>
+// 🛍️ Cargar productos guardados en localStorage
+function cargarProductos() {
+  const productos = JSON.parse(localStorage.getItem('productos')) || [];
+
+  const contenedor = document.getElementById('productos');
+  contenedor.innerHTML = '';
+
+  if (productos.length === 0) {
+    contenedor.innerHTML = '<p style="color:white;text-align:center;">No hay productos disponibles por el momento 🕓</p>';
+    return;
+  }
+
+  productos.forEach((p, index) => {
+    const productoHTML = `
+      <div class="producto">
+        <img src="${p.imagen}" alt="${p.nombre}">
+        <h3>${p.nombre}</h3>
+        <p>$${p.precio.toLocaleString('es-MX')}</p>
+        <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
+      </div>
+    `;
+    contenedor.innerHTML += productoHTML;
+  });
+}
+
+// 🛒 Agregar producto al carrito
+function agregarAlCarrito(i) {
+  const productos = JSON.parse(localStorage.getItem('productos')) || [];
+  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  carrito.push(productos[i]);
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+
+  // animación de carrito
+  const icono = document.getElementById('carrito-icono');
+  icono.classList.add('shake');
+  setTimeout(() => icono.classList.remove('shake'), 600);
+
+  mostrarMensaje('Producto agregado con éxito ✅');
+}
+
+// ✨ Mensaje flotante de confirmación
+function mostrarMensaje(texto) {
+  const msg = document.createElement('div');
+  msg.textContent = texto;
+  msg.style.position = 'fixed';
+  msg.style.bottom = '20px';
+  msg.style.right = '20px';
+  msg.style.background = '#4CAF50';
+  msg.style.color = 'white';
+  msg.style.padding = '12px 20px';
+  msg.style.borderRadius = '10px';
+  msg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+  msg.style.zIndex = '9999';
+  msg.style.opacity = '0';
+  msg.style.transition = 'opacity 0.3s ease';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.style.opacity = '1', 50);
+  setTimeout(() => {
+    msg.style.opacity = '0';
+    setTimeout(() => msg.remove(), 300);
+  }, 1500);
+}
+
+// Ejecutar al cargar la página
+document.addEventListener('DOMContentLoaded', cargarProductos);
+</script>
 </body>
 </html>
