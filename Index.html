@@ -19,15 +19,13 @@ header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;to
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
 .logo{font-size:24px;font-weight:900;letter-spacing:1px;}
 .header-actions{display:flex;align-items:center;gap:14px;}
-.icon{cursor:pointer;font-size:20px;position:relative;}
-.login-btn {background:none;border:none;font-size:16px;font-weight:600;color:var(--accent);cursor:pointer;padding:8px 12px;border-radius:6px;transition:opacity 0.2s;}
-.login-btn:hover{opacity:0.8;}
+.icon{cursor:pointer;font-size:20px;}
 main{max-width:1200px;margin:auto;padding:20px;}
 .page-title{font-size:38px;margin:6px 0 14px;font-weight:800;}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;}
 .card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s;cursor:pointer;}
 .card:hover{transform:translateY(-4px);}
-.card img{width:100%;height:auto;aspect-ratio:1/1;object-fit:contain;background:#f9f9f9;}
+.card img{width:100%;height:200px;object-fit:cover;object-position:center;background:#f2f2f2;}
 .card .meta{padding:14px;flex:1;display:flex;flex-direction:column;}
 .card .title{font-size:14px;font-weight:600;margin-bottom:8px;}
 .card .price{font-weight:800;font-size:16px;margin-bottom:12px;}
@@ -49,22 +47,16 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .paypal img{height:18px;}
 .cardpay{background:#0070ba;color:#fff;}
 .cardpay img{height:20px;filter:invert(1);}
-.toast{position:fixed;bottom:-80px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:14px 22px;border-radius:10px;opacity:0;transition:all .4s ease;z-index:200;font-weight:600;font-size:16px;box-shadow:0 6px 20px rgba(0,0,0,0.2);}
-.toast.show{bottom:60px;opacity:1;transform:translateX(-50%) scale(1.05);}
-@keyframes shake {
-  0%,100% { transform: rotate(0deg); }
-  20% { transform: rotate(-15deg); }
-  40% { transform: rotate(15deg); }
-  60% { transform: rotate(-10deg); }
-  80% { transform: rotate(10deg); }
-}
-.shake { animation: shake 0.4s ease; }
+.toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:var(--accent);color:#fff;padding:12px 18px;border-radius:8px;opacity:0;transition:.4s;z-index:200;font-weight:600;}
+.toast.show{opacity:1;bottom:60px;}
+.search-bar {display:none;margin-bottom: 20px;text-align:center;}
+.search-bar input {width: 90%;padding: 10px;border-radius: 8px;border: 1px solid #ccc;background: var(--card-bg);color: var(--text);font-size: 15px;}
 #menuBtn { cursor:pointer;font-size:26px;z-index:30;position:relative; }
 .menu-dropdown {position: fixed;top: 0; left: -270px;width: 250px; height: 100%;background: var(--card-bg);
   box-shadow: 2px 0 10px rgba(0,0,0,0.1);transition: left 0.3s ease;z-index: 25;padding: 60px 20px 20px;
-  display: flex; flex-direction: column;}
+  display: flex; flex-direction: column;position:fixed;}
 .menu-dropdown.open { left: 0; }
-.menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;text-align:center;}
+.menu-item {padding: 14px 0;border-bottom: 2px solid #e1e1e1;cursor: pointer;font-size: 16px;color: var(--text);font-weight: 600;}
 .menu-item:hover { color: var(--accent); }
 .menu-overlay {position: fixed;top: 0;left: 0;width: 100%;height: 100%;background: rgba(0,0,0,0.2);z-index: 24;
   opacity: 0;visibility: hidden;transition: opacity 0.3s ease;}
@@ -82,17 +74,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .proximamente-box img{width:80px;margin-bottom:10px;opacity:0.7;}
 .proximamente-box h2{font-size:22px;margin-bottom:8px;}
 .proximamente-box p{color:var(--muted);}
-.login-panel{position:fixed;top:0;left:-400px;width:340px;height:100%;background:var(--card-bg);box-shadow:4px 0 20px rgba(0,0,0,0.2);transition:left .3s ease;display:flex;flex-direction:column;z-index:100;}
-.login-panel.open{left:0;}
-.login-header{padding:16px;font-size:20px;font-weight:700;border-bottom:1px solid #ccc;display:flex;justify-content:space-between;align-items:center;}
-.login-form{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;}
-.login-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:6px;font-size:14px;}
-.login-btn-submit{background:var(--accent);color:#fff;border:none;padding:12px;border-radius:8px;cursor:pointer;font-weight:600;font-size:16px;}
-.login-btn-submit:hover{opacity:0.9;}
-.forgot-link{color:var(--accent);text-decoration:none;font-size:14px;text-align:center;display:block;margin-top:10px;cursor:pointer;}
-.forgot-link:hover{opacity:0.8;}
-.registro-link{color:var(--muted);text-align:center;font-size:14px;margin-top:10px;cursor:pointer;text-decoration:underline;}
-.card .description{font-size:12px;color:var(--muted);margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -100,9 +81,11 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <header>
   <div class="header-inner">
     <div id="menuBtn" title="Menú">☰</div>
-    <button id="loginBtn" class="login-btn" title="Iniciar Sesión">Iniciar Sesión</button>
     <div class="logo">Boutique Buendía</div>
     <div class="header-actions">
+      <div id="searchBtn" class="icon" title="Buscar">
+        <img src="https://cdn-icons-png.flaticon.com/512/622/622669.png" alt="Buscar" width="22">
+      </div>
       <div id="cartBtn" class="icon" title="Carrito">
         <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png" alt="Carrito" width="22">
       </div>
@@ -114,7 +97,6 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <div class="menu-overlay" id="menuOverlay"></div>
 <div class="menu-dropdown" id="menuDropdown">
   <span class="menu-close" id="menuClose">✕</span>
-  <div class="menu-item" data-section="todos">Todos</div>
   <div class="menu-item" data-section="gorras">Gorras</div>
   <div class="menu-item" data-section="camisetas">Camisetas</div>
   <div class="menu-item" data-section="sudaderas">Sudaderas</div>
@@ -124,25 +106,25 @@ main{max-width:1200px;margin:auto;padding:20px;}
   <div class="menu-item" data-section="cintos">Cintos</div>
 </div>
 
-<!-- Panel de Login -->
-<div class="login-panel" id="loginPanel">
-  <div class="login-header">
-    <span>Iniciar Sesión</span>
-    <span id="closeLogin" style="cursor:pointer;">✕</span>
-  </div>
-  <form class="login-form" id="loginForm">
-    <input type="text" id="username" class="login-input" placeholder="Usuario" required>
-    <input type="password" id="password" class="login-input" placeholder="Contraseña" required>
-    <button type="submit" class="login-btn-submit">Iniciar Sesión</button>
-    <a href="#" id="forgotPassword" class="forgot-link" style="display:none;">Olvidé mi contraseña</a>
-    <div class="registro-link" id="registroLink">¿No tienes cuenta? Regístrate</div>
-  </form>
-</div>
-
 <main id="mainContent">
-  <h1 class="page-title" id="pageTitle">Productos disponibles</h1>
+  <h1 class="page-title">Productos disponibles</h1>
   <section class="grid" id="productsGrid">
-    <!-- Productos se cargan dinámicamente aquí -->
+    <div class="card" data-name="Gorra Galaxy CT" data-price="18000" onclick="window.location='producto1.html'">
+      <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
+        <div class="price">$18,000.00</div>
+        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
+      </div>
+    </div>
+    <div class="card" data-name="Gorra Star CT" data-price="4500" onclick="window.location='producto2.html'">
+      <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
+      <div class="meta">
+        <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
+        <div class="price">$4,500.00</div>
+        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -174,6 +156,7 @@ main{max-width:1200px;margin:auto;padding:20px;}
 
 <script>
 const cartBtn = document.getElementById('cartBtn');
+const searchBtn = document.getElementById('searchBtn');
 const menuBtn = document.getElementById('menuBtn');
 const menuDropdown = document.getElementById('menuDropdown');
 const menuOverlay = document.getElementById('menuOverlay');
@@ -182,62 +165,9 @@ const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
-const loginBtn = document.getElementById('loginBtn');
-const loginPanel = document.getElementById('loginPanel');
-const closeLogin = document.getElementById('closeLogin');
-const loginForm = document.getElementById('loginForm');
-const forgotPassword = document.getElementById('forgotPassword');
-const registroLink = document.getElementById('registroLink');
-const productsGrid = document.getElementById('productsGrid');
-const pageTitle = document.getElementById('pageTitle');
+const addBtns = document.querySelectorAll('.add-btn');
+const cartFooter = document.getElementById('cartFooter');
 let cart = [];
-let productos = [];
-let currentSection = 'todos'; // Por defecto, todos
-
-// Cargar productos de localStorage
-function cargarProductos() {
-  productos = JSON.parse(localStorage.getItem('productos')) || [];
-  renderProductos(currentSection);
-}
-
-// Render productos filtrados por sección
-function renderProductos(section) {
-  currentSection = section;
-  const grid = productsGrid;
-  grid.innerHTML = '';
-  let filteredProductos = productos;
-  if (section !== 'todos') {
-    filteredProductos = productos.filter(p => p.nombre.toLowerCase().includes(section.toLowerCase()));
-  }
-  if (filteredProductos.length === 0) {
-    grid.innerHTML = '<div class="proximamente-box"><img src="https://cdn-icons-png.flaticon.com/512/814/814513.png"><h2>No hay productos</h2><p>Esta sección estará disponible muy pronto.</p></div>';
-    return;
-  }
-  filteredProductos.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/240?text=Imagen+No+Disponible'">
-      <div class="meta">
-        <div class="title">${p.nombre}</div>
-        <div class="price">$${p.precio.toLocaleString('es-MX')}</div>
-        <div class="description">${p.descripcion}</div>
-        <button class="add-btn" onclick="agregarAlCarrito('${p.nombre}', ${p.precio})">Agregar al carrito</button>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-  pageTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + ' disponibles';
-  if (section !== 'todos') pageTitle.textContent = `${section.charAt(0).toUpperCase() + section.slice(1)}`;
-}
-
-// Agregar al carrito (adaptado para productos dinámicos)
-function agregarAlCarrito(name, price) {
-  cart.push({name, price});
-  renderCart();
-  animateCart();
-  showToast("Producto agregado con éxito 🛒");
-}
 
 menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
 menuOverlay.onclick = closeMenu;
@@ -247,15 +177,15 @@ function closeMenu(){ menuDropdown.classList.remove('open'); menuOverlay.classLi
 cartBtn.onclick = ()=> cartPanel.classList.add('open');
 closeCart.onclick = ()=> cartPanel.classList.remove('open');
 
-loginBtn.onclick = () => { loginPanel.classList.add('open'); };
-closeLogin.onclick = () => { loginPanel.classList.remove('open'); forgotPassword.style.display = 'none'; };
-
-// Menú items - ahora filtra productos en lugar de proximamente
-document.querySelectorAll('.menu-item').forEach(item => {
-  item.onclick = () => {
-    const section = item.dataset.section;
-    renderProductos(section);
-    closeMenu();
+addBtns.forEach(btn=>{
+  btn.onclick = e=>{
+    e.stopPropagation();
+    const card = e.target.closest('.card');
+    const name = card.dataset.name;
+    const price = Number(card.dataset.price);
+    cart.push({name, price});
+    renderCart();
+    showToast("Producto agregado al carrito");
   };
 });
 
@@ -281,85 +211,24 @@ function renderCart(){
 
 function removeItem(i){ cart.splice(i,1); renderCart(); }
 
-function animateCart(){
-  const img = cartBtn.querySelector('img');
-  img.classList.add('shake');
-  setTimeout(()=> img.classList.remove('shake'), 500);
-}
-
 function showToast(msg){
   toast.textContent = msg;
   toast.classList.add('show');
-  setTimeout(()=> toast.classList.remove('show'), 2500);
+  setTimeout(()=> toast.classList.remove('show'), 2000);
 }
 
-document.getElementById('paypalBtn').onclick = () => {
-  if (cart.length === 0) {
-    showToast('Carrito vacío. Agrega productos primero.');
-    return;
-  }
-  // Simular compra: guardar en localStorage para admin
-  const compras = JSON.parse(localStorage.getItem('compras')) || [];
-  compras.push({
-    items: cart.map(item => ({nombre: item.name, precio: item.price})),
-    total: cart.reduce((sum, item) => sum + item.price, 0),
-    fecha: new Date().toLocaleString('es-MX')
-  });
-  localStorage.setItem('compras', JSON.stringify(compras));
-  alert("¡Pago exitoso con PayPal! Redirigiendo...");
-  cart = [];
-  renderCart();
-  showToast('Compra realizada con éxito. ¡Gracias!');
-};
-
-document.getElementById('cardBtn').onclick = () => {
-  if (cart.length === 0) {
-    showToast('Carrito vacío. Agrega productos primero.');
-    return;
-  }
-  // Simular compra igual
-  const compras = JSON.parse(localStorage.getItem('compras')) || [];
-  compras.push({
-    items: cart.map(item => ({nombre: item.name, precio: item.price})),
-    total: cart.reduce((sum, item) => sum + item.price, 0),
-    fecha: new Date().toLocaleString('es-MX')
-  });
-  localStorage.setItem('compras', JSON.stringify(compras));
-  alert("¡Pago exitoso con Tarjeta! Redirigiendo...");
-  cart = [];
-  renderCart();
-  showToast('Compra realizada con éxito. ¡Gracias!');
-};
-
-// Lógica de Login
-loginForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-
-  if (username === 'Buendía' && password === 'shop') {
-    // Redirigir al panel de admin
-    window.location.href = 'admin.html';
-  } else {
-    // Mostrar "Olvidé mi contraseña"
-    forgotPassword.style.display = 'block';
-    showToast('Credenciales incorrectas. Intenta de nuevo.');
+// Mostrar "Próximamente"
+document.querySelectorAll('.menu-item').forEach(item=>{
+  item.onclick = ()=>{
+    if(item.dataset.section!=="gorras"){
+      document.getElementById("mainContent").innerHTML=`
+      <div class='proximamente-box'>
+        <img src='https://cdn-icons-png.flaticon.com/512/814/814513.png'>
+        <h2>Próximamente</h2>
+        <p>Esta sección estará disponible muy pronto.</p>
+      </div>`;
+      closeMenu();
+    }
   }
 });
 
-forgotPassword.onclick = () => {
-  alert('Funcionalidad de recuperación de contraseña próximamente. Contacta a soporte.');
-  forgotPassword.style.display = 'none';
-};
-
-registroLink.onclick = () => {
-  alert('Registro próximamente disponible. ¡Mantente atento!');
-};
-
-// Cargar al iniciar
-document.addEventListener('DOMContentLoaded', () => {
-  cargarProductos();
-});
-</script>
-</body>
-</html>
