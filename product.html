@@ -1,56 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Producto</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title id="pageTitle">Producto - Boutique Buendía</title>
 <style>
-body{font-family:Inter,system-ui,sans-serif;margin:0;padding:20px;max-width:900px;margin:auto;}
-img{width:100%;max-width:340px;border-radius:12px;display:block;margin:auto;}
-h1{font-size:24px;margin-top:20px;}
-.price{font-size:22px;font-weight:800;margin:10px 0;color:#7c4dff;}
-.desc{color:#444;margin:14px 0;font-size:15px;line-height:1.4;}
-button{background:#7c4dff;color:#fff;border:none;padding:14px 20px;font-size:16px;border-radius:8px;cursor:pointer;width:100%;}
-button:hover{opacity:0.9;}
-.back{margin-top:18px;text-align:center;display:block;color:#555;text-decoration:none;font-weight:600;}
+/* --- TODO TU CSS TAL CUAL, SIN CAMBIAR --- */
+:root{
+  --bg:#fff;
+  --text:#111;
+  --muted:#777;
+  --card-bg:#fff;
+  --accent:#7c4dff;
+  --shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,sans-serif;}
+body{background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+header{background:var(--card-bg);border-bottom:1px solid #ddd;position:sticky;top:0;z-index:40;}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;}
+#menuBtn{cursor:pointer;font-size:26px;}
+.logo{font-weight:900;font-size:20px;letter-spacing:1px;}
+.header-actions{display:flex;gap:12px;align-items:center;}
+.icon img{width:22px;height:22px;display:block;}
+main{max-width:1200px;margin:24px auto;padding:0 20px 80px;}
+.breadcrumbs{font-size:13px;color:var(--muted);margin-bottom:12px;}
+.product-wrap{display:flex;gap:32px;flex-wrap:wrap;align-items:flex-start;}
+.product-media{flex:1 1 420px;min-width:300px;max-width:520px;}
+.product-media img{width:100%;border-radius:12px;box-shadow:var(--shadow);}
+.product-info{flex:1 1 420px;min-width:300px;}
+.page-title{font-size:26px;margin-bottom:8px;font-weight:800;}
+.price{font-size:24px;font-weight:800;color:var(--accent);margin-bottom:12px;}
+.desc{color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.qty-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.qty-row input{width:80px;padding:8px;border-radius:8px;border:1px solid #ddd;text-align:center;font-size:15px;}
+.add-btn{background:var(--accent);color:#fff;border:none;padding:12px 16px;border-radius:8px;font-weight:700;cursor:pointer;}
+.related{margin-top:48px;}
+.related h2{font-size:20px;margin-bottom:14px;font-weight:800;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px;}
+.card{background:var(--card-bg);border-radius:10px;box-shadow:var(--shadow);cursor:pointer;transition:.18s;}
+.card:hover{transform:translateY(-6px);}
+.card img{width:100%;height:220px;object-fit:contain;background:#fafafa;}
+.meta{padding:12px;}
+.meta .title{font-weight:700;font-size:14px;margin-bottom:8px;}
+.meta .price{font-weight:800;}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:20px;background:var(--accent);color:#fff;padding:14px 20px;border-radius:10px;opacity:0;transition:.35s;z-index:60;}
+.toast.show{opacity:1;}
 </style>
 </head>
 <body>
 
-<div id="productoContainer"></div>
+<header>
+  <div class="header-inner">
+    <div id="menuBtn">☰</div>
+    <div class="logo">Boutique Buendía</div>
+    <div id="cartBtn" class="icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/833/833314.png">
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumbs" id="breadcrumbs"></div>
+
+  <section class="product-wrap">
+    <div class="product-media">
+      <img id="productImg" src="">
+    </div>
+
+    <div class="product-info">
+      <div class="page-title" id="productName"></div>
+      <div class="price" id="productPrice"></div>
+      <div class="desc" id="productDesc"></div>
+
+      <div class="qty-row">
+        <label>Cantidad</label>
+        <input id="qty" type="number" min="1" value="1">
+      </div>
+
+      <button class="add-btn" id="addToCartBtn">Agregar al carrito</button>
+    </div>
+  </section>
+
+  <section class="related">
+    <h2>También podría interesarte</h2>
+    <div class="grid" id="relatedGrid"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast">Producto agregado 🛒</div>
 
 <script>
-// Leer ID desde la URL
-const params = new URLSearchParams(window.location.search);
+const params = new URLSearchParams(location.search);
 const id = params.get("id");
 
-// Obtener productos del localStorage
-let productos = JSON.parse(localStorage.getItem('productos')) || [];
-
-// Buscar producto por ID
-const producto = productos.find(p => p.id == id);
+// obtiene productos
+let productos = JSON.parse(localStorage.getItem("productos")) || [];
+let producto = productos.find(p => p.id == id);
 
 if(!producto){
-  document.getElementById("productoContainer").innerHTML = "<h2>Producto no encontrado</h2>";
+  document.body.innerHTML = "<center><h2>Producto no encontrado</h2></center>";
 } else {
-  document.getElementById("productoContainer").innerHTML = `
-    <img src="${producto.imagen}" alt="${producto.nombre}" onerror="this.src='https://via.placeholder.com/340?text=Sin+Imagen'">
-    <h1>${producto.nombre}</h1>
-    <div class="price">$${producto.precio.toLocaleString('es-MX')}</div>
-    <p class="desc">${producto.descripcion}</p>
-    <button onclick="agregarAlCarrito('${producto.nombre}', ${producto.precio})">Agregar al carrito 🛒</button>
-    <a href="index.html" class="back">← Volver a la tienda</a>
-  `;
+  document.getElementById("pageTitle").textContent = producto.nombre;
+  document.getElementById("productImg").src = producto.imagen;
+  document.getElementById("productName").textContent = producto.nombre;
+  document.getElementById("productPrice").textContent = "$" + producto.precio.toLocaleString('es-MX');
+  document.getElementById("productDesc").textContent = producto.descripcion;
+  document.getElementById("breadcrumbs").textContent = "INICIO > " + producto.nombre;
 }
 
-// Función para agregar al carrito (misma que en index)
-function agregarAlCarrito(name, price){
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  cart.push({name, price});
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert("Producto agregado al carrito ✅");
+// carrito
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+document.getElementById("addToCartBtn").onclick = ()=>{
+  const qty = Math.max(1, parseInt(document.getElementById("qty").value));
+  for(let i=0; i<qty; i++){
+    cart.push({name: producto.nombre, price: producto.precio});
+  }
+  localStorage.setItem("cart", JSON.stringify(cart));
+  showToast();
+};
+
+// toast
+function showToast(){
+  const t = document.getElementById("toast");
+  t.classList.add("show");
+  setTimeout(()=> t.classList.remove("show"), 2000);
 }
+
+// relacionados
+let keyword = producto.nombre.split(" ")[0].toLowerCase();
+let rel = productos.filter(p=> p.id != producto.id && p.nombre.toLowerCase().includes(keyword)).slice(0,4);
+
+let grid = document.getElementById("relatedGrid");
+rel.forEach(r=>{
+  grid.innerHTML += `
+    <div class="card" onclick="location.href='product.html?id=${r.id}'">
+      <img src="${r.imagen}">
+      <div class="meta">
+        <div class="title">${r.nombre}</div>
+        <div class="price">$${r.precio.toLocaleString('es-MX')}</div>
+      </div>
+    </div>`;
+});
 </script>
-
 </body>
 </html>
