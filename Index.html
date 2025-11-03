@@ -92,6 +92,7 @@ main{max-width:1200px;margin:auto;padding:20px;}
 .forgot-link{color:var(--accent);text-decoration:none;font-size:14px;text-align:center;display:block;margin-top:10px;cursor:pointer;}
 .forgot-link:hover{opacity:0.8;}
 .registro-link{color:var(--muted);text-align:center;font-size:14px;margin-top:10px;cursor:pointer;text-decoration:underline;}
+.card .description{font-size:12px;color:var(--muted);margin-bottom:12px;}
 </style>
 </head>
 <body>
@@ -113,6 +114,7 @@ main{max-width:1200px;margin:auto;padding:20px;}
 <div class="menu-overlay" id="menuOverlay"></div>
 <div class="menu-dropdown" id="menuDropdown">
   <span class="menu-close" id="menuClose">✕</span>
+  <div class="menu-item" data-section="todos">Todos</div>
   <div class="menu-item" data-section="gorras">Gorras</div>
   <div class="menu-item" data-section="camisetas">Camisetas</div>
   <div class="menu-item" data-section="sudaderas">Sudaderas</div>
@@ -138,32 +140,9 @@ main{max-width:1200px;margin:auto;padding:20px;}
 </div>
 
 <main id="mainContent">
-  <h1 class="page-title">Productos disponibles</h1>
+  <h1 class="page-title" id="pageTitle">Productos disponibles</h1>
   <section class="grid" id="productsGrid">
-    <div class="card" data-name="Gorra Galaxy CT" data-price="18000" onclick="window.location='producto1.html'">
-      <img src="http://imgfz.com/i/TBumyjZ.webp" alt="Gorra Galaxy">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "GALAXY CT" GOLD 24K PLATED</div>
-        <div class="price">$18,000.00</div>
-        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
-      </div>
-    </div>
-    <div class="card" data-name="Gorra Star CT" data-price="4500" onclick="window.location='producto2.html'">
-      <img src="http://imgfz.com/i/rTJ1Xnl.webp" alt="Gorra Star">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "STAR CT"</div>
-        <div class="price">$4,500.00</div>
-        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
-      </div>
-    </div>
-    <div class="card" data-name="Gorra Oriental Tumbado" data-price="3300" onclick="window.location='producto3.html'">
-      <img src="http://imgfz.com/i/P9gF7m8.webp" alt="Gorra Oriental">
-      <div class="meta">
-        <div class="title">Gorra Barbas Hats x CT "ORIENTAL TUMBADO"</div>
-        <div class="price">$3,300.00</div>
-        <button class="add-btn" onclick="event.stopPropagation()">Agregar al carrito</button>
-      </div>
-    </div>
+    <!-- Productos se cargan dinámicamente aquí -->
   </section>
 </main>
 
@@ -203,14 +182,62 @@ const cartPanel = document.getElementById('cartPanel');
 const closeCart = document.getElementById('closeCart');
 const toast = document.getElementById('toast');
 const cartItems = document.getElementById('cartItems');
-const addBtns = document.querySelectorAll('.add-btn');
 const loginBtn = document.getElementById('loginBtn');
 const loginPanel = document.getElementById('loginPanel');
 const closeLogin = document.getElementById('closeLogin');
 const loginForm = document.getElementById('loginForm');
 const forgotPassword = document.getElementById('forgotPassword');
 const registroLink = document.getElementById('registroLink');
+const productsGrid = document.getElementById('productsGrid');
+const pageTitle = document.getElementById('pageTitle');
 let cart = [];
+let productos = [];
+let currentSection = 'todos'; // Por defecto, todos
+
+// Cargar productos de localStorage
+function cargarProductos() {
+  productos = JSON.parse(localStorage.getItem('productos')) || [];
+  renderProductos(currentSection);
+}
+
+// Render productos filtrados por sección
+function renderProductos(section) {
+  currentSection = section;
+  const grid = productsGrid;
+  grid.innerHTML = '';
+  let filteredProductos = productos;
+  if (section !== 'todos') {
+    filteredProductos = productos.filter(p => p.nombre.toLowerCase().includes(section.toLowerCase()));
+  }
+  if (filteredProductos.length === 0) {
+    grid.innerHTML = '<div class="proximamente-box"><img src="https://cdn-icons-png.flaticon.com/512/814/814513.png"><h2>No hay productos</h2><p>Esta sección estará disponible muy pronto.</p></div>';
+    return;
+  }
+  filteredProductos.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/240?text=Imagen+No+Disponible'">
+      <div class="meta">
+        <div class="title">${p.nombre}</div>
+        <div class="price">$${p.precio.toLocaleString('es-MX')}</div>
+        <div class="description">${p.descripcion}</div>
+        <button class="add-btn" onclick="agregarAlCarrito('${p.nombre}', ${p.precio})">Agregar al carrito</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+  pageTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + ' disponibles';
+  if (section !== 'todos') pageTitle.textContent = `${section.charAt(0).toUpperCase() + section.slice(1)}`;
+}
+
+// Agregar al carrito (adaptado para productos dinámicos)
+function agregarAlCarrito(name, price) {
+  cart.push({name, price});
+  renderCart();
+  animateCart();
+  showToast("Producto agregado con éxito 🛒");
+}
 
 menuBtn.onclick = () => { menuDropdown.classList.add('open'); menuOverlay.classList.add('show'); };
 menuOverlay.onclick = closeMenu;
@@ -223,16 +250,12 @@ closeCart.onclick = ()=> cartPanel.classList.remove('open');
 loginBtn.onclick = () => { loginPanel.classList.add('open'); };
 closeLogin.onclick = () => { loginPanel.classList.remove('open'); forgotPassword.style.display = 'none'; };
 
-addBtns.forEach(btn=>{
-  btn.onclick = e=>{
-    e.stopPropagation();
-    const card = e.target.closest('.card');
-    const name = card.dataset.name;
-    const price = Number(card.dataset.price);
-    cart.push({name, price});
-    renderCart();
-    animateCart();
-    showToast("Producto agregado con éxito 🛒");
+// Menú items - ahora filtra productos en lugar de proximamente
+document.querySelectorAll('.menu-item').forEach(item => {
+  item.onclick = () => {
+    const section = item.dataset.section;
+    renderProductos(section);
+    closeMenu();
   };
 });
 
@@ -270,23 +293,43 @@ function showToast(msg){
   setTimeout(()=> toast.classList.remove('show'), 2500);
 }
 
-// Mostrar "Próximamente"
-document.querySelectorAll('.menu-item').forEach(item=>{
-  item.onclick = ()=>{
-    if(item.dataset.section!=="gorras"){
-      document.getElementById("mainContent").innerHTML=`
-      <div class='proximamente-box'>
-        <img src='https://cdn-icons-png.flaticon.com/512/814/814513.png'>
-        <h2>Próximamente</h2>
-        <p>Esta sección estará disponible muy pronto.</p>
-      </div>`;
-      closeMenu();
-    }
+document.getElementById('paypalBtn').onclick = () => {
+  if (cart.length === 0) {
+    showToast('Carrito vacío. Agrega productos primero.');
+    return;
   }
-});
+  // Simular compra: guardar en localStorage para admin
+  const compras = JSON.parse(localStorage.getItem('compras')) || [];
+  compras.push({
+    items: cart.map(item => ({nombre: item.name, precio: item.price})),
+    total: cart.reduce((sum, item) => sum + item.price, 0),
+    fecha: new Date().toLocaleString('es-MX')
+  });
+  localStorage.setItem('compras', JSON.stringify(compras));
+  alert("¡Pago exitoso con PayPal! Redirigiendo...");
+  cart = [];
+  renderCart();
+  showToast('Compra realizada con éxito. ¡Gracias!');
+};
 
-document.getElementById('paypalBtn').onclick = ()=>alert("Redirigiendo a PayPal (simulado)...");
-document.getElementById('cardBtn').onclick = ()=>alert("Procesando pago con tarjeta (simulado)...");
+document.getElementById('cardBtn').onclick = () => {
+  if (cart.length === 0) {
+    showToast('Carrito vacío. Agrega productos primero.');
+    return;
+  }
+  // Simular compra igual
+  const compras = JSON.parse(localStorage.getItem('compras')) || [];
+  compras.push({
+    items: cart.map(item => ({nombre: item.name, precio: item.price})),
+    total: cart.reduce((sum, item) => sum + item.price, 0),
+    fecha: new Date().toLocaleString('es-MX')
+  });
+  localStorage.setItem('compras', JSON.stringify(compras));
+  alert("¡Pago exitoso con Tarjeta! Redirigiendo...");
+  cart = [];
+  renderCart();
+  showToast('Compra realizada con éxito. ¡Gracias!');
+};
 
 // Lógica de Login
 loginForm.addEventListener('submit', (e) => {
@@ -296,7 +339,7 @@ loginForm.addEventListener('submit', (e) => {
 
   if (username === 'Buendía' && password === 'shop') {
     // Redirigir al panel de admin
-    window.location.href = 'admin.html'; // Crea un archivo admin.html para el panel de admin
+    window.location.href = 'admin.html';
   } else {
     // Mostrar "Olvidé mi contraseña"
     forgotPassword.style.display = 'block';
@@ -312,73 +355,11 @@ forgotPassword.onclick = () => {
 registroLink.onclick = () => {
   alert('Registro próximamente disponible. ¡Mantente atento!');
 };
-</script>
-  <script>
-// 🛍️ Cargar productos guardados en localStorage
-function cargarProductos() {
-  const productos = JSON.parse(localStorage.getItem('productos')) || [];
 
-  const contenedor = document.getElementById('productos');
-  contenedor.innerHTML = '';
-
-  if (productos.length === 0) {
-    contenedor.innerHTML = '<p style="color:white;text-align:center;">No hay productos disponibles por el momento 🕓</p>';
-    return;
-  }
-
-  productos.forEach((p, index) => {
-    const productoHTML = `
-      <div class="producto">
-        <img src="${p.imagen}" alt="${p.nombre}">
-        <h3>${p.nombre}</h3>
-        <p>$${p.precio.toLocaleString('es-MX')}</p>
-        <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
-      </div>
-    `;
-    contenedor.innerHTML += productoHTML;
-  });
-}
-
-// 🛒 Agregar producto al carrito
-function agregarAlCarrito(i) {
-  const productos = JSON.parse(localStorage.getItem('productos')) || [];
-  const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-  carrito.push(productos[i]);
-  localStorage.setItem('carrito', JSON.stringify(carrito));
-
-  // animación de carrito
-  const icono = document.getElementById('carrito-icono');
-  icono.classList.add('shake');
-  setTimeout(() => icono.classList.remove('shake'), 600);
-
-  mostrarMensaje('Producto agregado con éxito ✅');
-}
-
-// ✨ Mensaje flotante de confirmación
-function mostrarMensaje(texto) {
-  const msg = document.createElement('div');
-  msg.textContent = texto;
-  msg.style.position = 'fixed';
-  msg.style.bottom = '20px';
-  msg.style.right = '20px';
-  msg.style.background = '#4CAF50';
-  msg.style.color = 'white';
-  msg.style.padding = '12px 20px';
-  msg.style.borderRadius = '10px';
-  msg.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
-  msg.style.zIndex = '9999';
-  msg.style.opacity = '0';
-  msg.style.transition = 'opacity 0.3s ease';
-  document.body.appendChild(msg);
-  setTimeout(() => msg.style.opacity = '1', 50);
-  setTimeout(() => {
-    msg.style.opacity = '0';
-    setTimeout(() => msg.remove(), 300);
-  }, 1500);
-}
-
-// Ejecutar al cargar la página
-document.addEventListener('DOMContentLoaded', cargarProductos);
+// Cargar al iniciar
+document.addEventListener('DOMContentLoaded', () => {
+  cargarProductos();
+});
 </script>
 </body>
 </html>
